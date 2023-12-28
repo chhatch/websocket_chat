@@ -12,7 +12,7 @@ ws.on("open", () => {
 });
 
 ws.on("close", () => {
-  console.log("Client disconnected.");
+  console.log("Connection closed.");
   teardown();
 });
 

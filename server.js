@@ -7,7 +7,7 @@ const wsServer = new WebSocketServer({ port: 8080 });
 
 wsServer.on("connection", (ws) => {
   ws.on("close", () => {
-    console.log("Server disconnected.");
+    console.log("Connection closed.");
     teardown();
   });
 
@@ -20,3 +20,5 @@ wsServer.on("connection", (ws) => {
 
   console.log("Server connected.");
 });
+
+console.log("Server online.");
