@@ -1,6 +1,7 @@
 import { createWebSocketStream, WebSocket } from "ws";
 import { parseMessageBuilder } from "./parseMessage.js";
 import { parseInputBuilder } from "./parseInput.js";
+import { teardown } from "./teardown.js";
 
 const ws = new WebSocket("ws://localhost:8080");
 
@@ -12,7 +13,7 @@ ws.on("open", () => {
 
 ws.on("close", () => {
   console.log("Client disconnected.");
-  process.stdin.unpipe();
+  teardown();
 });
 
 const wsStream = createWebSocketStream(ws, { encoding: "utf8" });
