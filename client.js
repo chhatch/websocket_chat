@@ -8,7 +8,7 @@ const ws = new WebSocket("ws://localhost:8080");
 ws.on("error", console.error);
 
 ws.on("open", () => {
-  console.log("Client connected.");
+  console.log("Connected to server.");
 });
 
 ws.on("close", () => {
