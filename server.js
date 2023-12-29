@@ -2,6 +2,7 @@ import { createWebSocketStream, WebSocketServer } from "ws";
 import { parseMessageBuilder } from "./parseMessage.js";
 import { parseInputBuilder } from "./parseInput.js";
 import { teardown } from "./teardown.js";
+import { buildMessage } from "./utils/build-message.js";
 
 const wsServer = new WebSocketServer({ port: 8080 });
 const waitingClients = [];
@@ -20,13 +21,11 @@ wsServer.on("connection", (ws) => {
 
     client.pipe(wsStream);
     wsStream.pipe(client);
-    client.write(JSON.stringify({ type: "text", data: `Player found!\n` }));
-    wsStream.write(JSON.stringify({ type: "text", data: `Player found!\n` }));
+    client.write(buildMessage("text", "Another player has joined!\n"));
+    wsStream.write(buildMessage("text", "You have joined!\n"));
   } else {
     waitingClients.push(wsStream);
-    wsStream.write(
-      JSON.stringify({ type: "text", data: `Waiting for another player...\n` })
-    );
+    wsStream.write(buildMessage("text", `Waiting for another player...\n`));
   }
 
   console.log("Client connected.");

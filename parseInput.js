@@ -1,4 +1,5 @@
 import { Transform } from "stream";
+import { buildMessage } from "./utils/index.js";
 
 export const parseInputBuilder = (label, ws) =>
   new Transform({
@@ -28,7 +29,3 @@ export const parseInputBuilder = (label, ws) =>
       next();
     },
   });
-
-function buildMessage(type, data) {
-  return JSON.stringify({ type, data });
-}
