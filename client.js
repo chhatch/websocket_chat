@@ -1,6 +1,9 @@
 import { createWebSocketStream, WebSocket } from "ws";
-import { parseMessageBuilder } from "./parseMessage.js";
-import { parseInputBuilder } from "./parseInput.js";
+import {
+  parseInputBuilder,
+  parseMessageBuilder,
+  displayBuilder,
+} from "./stream-factories/index.js";
 import { teardown } from "./teardown.js";
 
 const [name = "rando", address = "ws://localhost:8080"] = process.argv.slice(2);
@@ -22,6 +25,7 @@ ws.on("close", () => {
 const wsStream = createWebSocketStream(ws, { encoding: "utf8" });
 const parseInputStream = parseInputBuilder(name, ws);
 const parseMessageStream = parseMessageBuilder(name);
+const displayStream = displayBuilder();
 
-wsStream.pipe(parseMessageStream).pipe(process.stdout);
+wsStream.pipe(parseMessageStream).pipe(displayStream);
 process.stdin.pipe(parseInputStream).pipe(wsStream);

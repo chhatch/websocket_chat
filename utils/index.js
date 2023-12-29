@@ -1,2 +1,2 @@
 export * from "./json.js";
-export * from "./build-message.js";
+export * from "./buildMessage.js";

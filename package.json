@@ -5,6 +5,7 @@
   "author": "Chris Hatch <siege.hatch@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "terminal-kit": "^3.0.1",
     "ws": "^8.16.0"
   },
   "type": "module"
