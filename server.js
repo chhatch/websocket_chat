@@ -21,11 +21,15 @@ wsServer.on("connection", (ws) => {
 
     client.pipe(wsStream);
     wsStream.pipe(client);
-    client.write(buildMessage("text", "Another player has joined!\n"));
-    wsStream.write(buildMessage("text", "You have joined!\n"));
+    client.write(
+      buildMessage("text", "Another player has joined!\n", "Server")
+    );
+    wsStream.write(buildMessage("text", "You have joined!\n", "Server"));
   } else {
     waitingClients.push(wsStream);
-    wsStream.write(buildMessage("text", `Waiting for another player...\n`));
+    wsStream.write(
+      buildMessage("text", "Waiting for another player...", "Server")
+    );
   }
 
   console.log("Client connected.");

@@ -5,11 +5,11 @@ import fs from "fs";
 export const parseMessageBuilder = (label) =>
   new Transform({
     transform(chunk, encoding, next) {
-      const { type, data } = safeParseJSON(chunk.toString().trim());
+      const { type, data, from } = safeParseJSON(chunk.toString().trim());
 
       // handle text
       if (type === "text") {
-        this.push(`Received: ${data}\n`);
+        this.push(`${from || "Received"}: ${data}\n`);
       }
       // handle ascii art
       else if (type === "ascii") {

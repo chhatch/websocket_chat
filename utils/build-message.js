@@ -1,3 +1,3 @@
-export function buildMessage(type, data) {
-  return JSON.stringify({ type, data });
+export function buildMessage(type, data, from) {
+  return JSON.stringify({ type, data, from });
 }

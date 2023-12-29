@@ -25,7 +25,7 @@ export const parseInputBuilder = (label, ws) =>
         }
       }
       // send text
-      else this.push(buildMessage("text", string));
+      else this.push(buildMessage("text", string, label));
       next();
     },
   });
