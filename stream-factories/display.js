@@ -3,6 +3,8 @@ import terminalPkg from "terminal-kit";
 
 const { terminal } = terminalPkg;
 
+terminal.windowTitle("Terminal Chat");
+
 export const displayBuilder = () =>
   new Writable({
     objectMode: true,
@@ -13,6 +15,8 @@ export const displayBuilder = () =>
         terminal[color](data);
       } else if (type === "ascii") {
         terminal.bold[color](data);
+      } else if (type === "volcano") {
+        terminal.drawImage(data, { shrink: { width: 100, height: 100 } });
       } else console.error(`Unknown display type: ${type}`);
       next();
     },

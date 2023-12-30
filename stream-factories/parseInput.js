@@ -22,6 +22,8 @@ export const parseInputBuilder = (label, ws) =>
           this.push(buildMessage("ascii", "ogre"));
         } else if (string === ":punch") {
           this.push(buildMessage("ascii", "punch"));
+        } else if (string === ":volcano") {
+          this.push(buildMessage("volcano", "assets/volcano.png"));
         } else {
           console.log(`Unknown ascii art: ${string.slice(1)}`);
         }

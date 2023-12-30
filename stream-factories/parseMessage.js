@@ -9,7 +9,7 @@ export const parseMessageBuilder = (label) =>
       const {
         type,
         data,
-        from = Received,
+        from = "Received",
       } = safeParseJSON(chunk.toString().trim());
 
       // handle text
@@ -63,6 +63,12 @@ export const parseMessageBuilder = (label) =>
         } else {
           console.log(`Unknown ascii art: ${string.slice(1)}`);
         }
+      } else if (type === "volcano") {
+        const displayInput = buildDisplayInput({
+          type,
+          data,
+        });
+        this.push(displayInput);
       } else console.error(`Unknown message type: ${type}`);
 
       next();
@@ -74,13 +80,13 @@ function buildDisplayInput({ type, data, color }) {
 }
 
 function getCleric() {
-  return fs.readFileSync("./ascii-art/cleric.txt", "utf8");
+  return fs.readFileSync("./assets/cleric.txt", "utf8");
 }
 
 function getOgre() {
-  return fs.readFileSync("./ascii-art/ogre.txt", "utf8");
+  return fs.readFileSync("./assets/ogre.txt", "utf8");
 }
 
 function getPunch() {
-  return fs.readFileSync("./ascii-art/punch.txt", "utf8");
+  return fs.readFileSync("./assets/punch.txt", "utf8");
 }
