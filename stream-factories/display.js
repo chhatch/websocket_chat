@@ -8,6 +8,8 @@ export const displayBuilder = () =>
     objectMode: true,
     write({ type, data, color }, encoding, next) {
       if (type === "text") {
+        terminal.slowTyping(data, { style: terminal[color], delay: 75 });
+      } else if (type === "label") {
         terminal[color](data);
       } else if (type === "ascii") {
         terminal.bold[color](data);

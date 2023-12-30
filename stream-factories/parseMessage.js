@@ -6,7 +6,11 @@ export const parseMessageBuilder = (label) =>
   new Transform({
     objectMode: true,
     transform(chunk, encoding, next) {
-      const { type, data, from } = safeParseJSON(chunk.toString().trim());
+      const {
+        type,
+        data,
+        from = Received,
+      } = safeParseJSON(chunk.toString().trim());
 
       // handle text
       if (type === "text") {
@@ -14,12 +18,20 @@ export const parseMessageBuilder = (label) =>
 
         if (from === "Server") color = "brightBlue";
 
-        const string = `${from || "Received"}: ${data}\n`;
+        const displayFromInput = buildDisplayInput({
+          type: "label",
+          data: `${from}: `,
+          color,
+        });
+
+        const string = `${data}\n`;
         const displayInput = buildDisplayInput({
           type,
           data: string,
           color,
         });
+
+        this.push(displayFromInput);
         this.push(displayInput);
       }
       // handle ascii art
