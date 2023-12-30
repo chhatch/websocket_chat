@@ -3,29 +3,32 @@ import {
   parseInputBuilder,
   parseMessageBuilder,
   displayBuilder,
+  MessageStream,
 } from "./stream-factories/index.js";
 import { teardown } from "./teardown.js";
+import { inputStream } from "./stream-factories/display.js";
 
 const [name = "rando", address = "ws://localhost:8080"] = process.argv.slice(2);
-console.log(`Connecting to ${address} as ${name}...`);
+// console.log(`Connecting to ${address} as ${name}...`);
 
 const ws = new WebSocket("ws://localhost:8080");
 
 ws.on("error", console.error);
 
 ws.on("open", () => {
-  console.log("Connected to server.");
+  // console.log("Connected to server.");
 });
 
 ws.on("close", () => {
-  console.log("Connection closed.");
+  // console.log("Connection closed.");
   teardown();
 });
+MessageStream.parseMessageStream = parseMessageBuilder(name);
 
 const wsStream = createWebSocketStream(ws, { encoding: "utf8" });
 const parseInputStream = parseInputBuilder(name, ws);
-const parseMessageStream = parseMessageBuilder(name);
+const parseMessageStream = MessageStream.parseMessageStream;
 const displayStream = displayBuilder();
 
 wsStream.pipe(parseMessageStream).pipe(displayStream);
-process.stdin.pipe(parseInputStream).pipe(wsStream);
+inputStream.pipe(parseInputStream).pipe(wsStream);

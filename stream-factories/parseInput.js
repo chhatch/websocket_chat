@@ -1,5 +1,6 @@
-import { Transform } from "stream";
+import internal, { Transform } from "stream";
 import { buildMessage } from "../utils/index.js";
+import { MessageStream } from "./parseMessage.js";
 
 export const parseInputBuilder = (label, ws) =>
   new Transform({
@@ -29,7 +30,12 @@ export const parseInputBuilder = (label, ws) =>
         }
       }
       // send text
-      else this.push(buildMessage("text", string, label));
+      else {
+        const outGoingMessage = buildMessage("text", string, label);
+        const internalMessage = buildMessage("text", string, "You");
+        MessageStream.parseMessageStream.write(internalMessage);
+        this.push(outGoingMessage);
+      }
       next();
     },
   });

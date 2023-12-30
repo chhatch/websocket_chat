@@ -2,6 +2,8 @@ import { Transform } from "stream";
 import { safeParseJSON } from "../utils/index.js";
 import fs from "fs";
 
+export const MessageStream = { parseMessageStream: null };
+
 export const parseMessageBuilder = (label) =>
   new Transform({
     objectMode: true,
@@ -18,20 +20,13 @@ export const parseMessageBuilder = (label) =>
 
         if (from === "Server") color = "brightBlue";
 
-        const displayFromInput = buildDisplayInput({
-          type: "label",
-          data: `${from}: `,
-          color,
-        });
-
-        const string = `${data}\n`;
+        const string = `${from}: ${data}\n`;
         const displayInput = buildDisplayInput({
           type,
           data: string,
           color,
         });
 
-        this.push(displayFromInput);
         this.push(displayInput);
       }
       // handle ascii art
