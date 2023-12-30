@@ -20,31 +20,32 @@ const document = term.createDocument({
   palette: new termkit.Palette(),
 });
 
-const textBoxHeight = 20;
-const textBoxWidth = 80;
+const chatBoxHeight = 22;
+const chatBoxWidth = 80;
 
-const textBox = new termkit.TextBox({
+const chatBox = new termkit.TextBox({
   contentHasMarkup: true,
   parent: document,
   scrollable: true,
   vScrollBar: true,
   lineWrap: true,
-  x: 0,
+  x: 2,
   y: 2,
-  width: textBoxWidth,
-  height: textBoxHeight,
+  width: chatBoxWidth,
+  height: chatBoxHeight,
 });
 
-// append 20 newlines to the textBox
-textBox.appendLog("\n".repeat(textBoxHeight - 1));
+// append newlines to the chatBox to fill the height
+chatBox.appendLog("\n".repeat(chatBoxHeight - 1));
 
-const inlineInput = new termkit.InlineInput({
+//chat input
+const chatInput = new termkit.InlineInput({
   parent: document,
   textAttr: {},
   voidAttr: {},
   placeholder: "Chat, enter commands, or send art",
-  x: 0,
-  y: textBoxHeight + 2,
+  x: 2,
+  y: chatBoxHeight + 3,
   //*
   prompt: {
     textAttr: {},
@@ -54,7 +55,7 @@ const inlineInput = new termkit.InlineInput({
   //*/
   //firstLineRightShift: 8 ,
   //width: 36 ,
-  width: textBoxWidth,
+  width: chatBoxWidth,
   cancelable: true,
   value: "",
   //   history: ["Bob", "Bill", "Jack", "Some entry string"]
@@ -64,34 +65,72 @@ const inlineInput = new termkit.InlineInput({
   //   autoCompleteHintMinInput: 5,
 });
 
-inlineInput.on("submit", onSubmit);
+chatInput.on("submit", onSubmit);
 
 function onSubmit(value) {
   // send text
   inputStream.write(value);
 
   //clear the input
-  inlineInput.textBuffer.setText("");
-  inlineInput.draw();
+  chatInput.textBuffer.setText("");
+  chatInput.draw();
 }
 
-inlineInput.on("cancel", onCancel);
+chatInput.on("cancel", onCancel);
 
 function onCancel() {
   // clear the input
-  inlineInput.textBuffer.setText("");
-  inlineInput.draw();
+  chatInput.textBuffer.setText("");
+  chatInput.draw();
 }
 
+// focus the input
 document.focusNext();
 document.focusNext();
 document.focusNext();
 document.focusNext();
+
+// chat box border
+const chatBoxBorder = new termkit.Border({
+  parent: chatBox,
+  color: "blue",
+  bgColor: "green",
+});
+
+// chat input border
+const chatInputBorder = new termkit.Border({
+  parent: chatInput,
+  color: "blue",
+  bgColor: "green",
+});
+
+// ascii art box
+const textBox = new termkit.TextBox({
+  contentHasMarkup: true,
+  parent: document,
+  scrollable: true,
+  vScrollBar: true,
+  lineWrap: true,
+  x: chatBoxWidth + 3,
+  y: 2,
+  width: chatBoxWidth,
+  height: chatBoxHeight,
+});
+
+// art box border
+const textBoxBorder = new termkit.Border({
+  parent: textBox,
+  color: "blue",
+  bgColor: "green",
+});
 
 const colorDict = {
   brightBlue: "^B",
   brightCyan: "^C",
   brightWhite: "^W",
+  brightYellow: "^Y",
+  green: "^g",
+  red: "^r",
   white: "^w",
 };
 
@@ -100,9 +139,9 @@ export const displayBuilder = () =>
     objectMode: true,
     write({ type, data, color }, encoding, next) {
       if (type === "text") {
-        textBox.appendLog(`${colorDict[color]}${data}`);
+        chatBox.appendLog(` ${colorDict[color]}${data}`);
       } else if (type === "ascii") {
-        term.bold[color](data);
+        textBox.appendLog(`${data.split("\n").join(`\n${colorDict[color]} `)}`);
       } else if (type === "volcano") {
         term.drawImage(data, { shrink: { width: 100, height: 100 } });
       } else console.error(`Unknown display type: ${type}`);
