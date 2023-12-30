@@ -20,6 +20,8 @@ export const parseInputBuilder = (label, ws) =>
           this.push(buildMessage("ascii", "cleric"));
         } else if (string === ":ogre") {
           this.push(buildMessage("ascii", "ogre"));
+        } else if (string === ":punch") {
+          this.push(buildMessage("ascii", "punch"));
         } else {
           console.log(`Unknown ascii art: ${string.slice(1)}`);
         }

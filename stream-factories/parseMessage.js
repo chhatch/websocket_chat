@@ -40,6 +40,14 @@ export const parseMessageBuilder = (label) =>
             color: "green",
           });
           this.push(displayInput);
+        } else if (data === "punch") {
+          const art = `\n${getPunch()}\n\n`;
+          const displayInput = buildDisplayInput({
+            type,
+            data: art,
+            color: "red",
+          });
+          this.push(displayInput);
         } else {
           console.log(`Unknown ascii art: ${string.slice(1)}`);
         }
@@ -59,4 +67,8 @@ function getCleric() {
 
 function getOgre() {
   return fs.readFileSync("./ascii-art/ogre.txt", "utf8");
+}
+
+function getPunch() {
+  return fs.readFileSync("./ascii-art/punch.txt", "utf8");
 }
