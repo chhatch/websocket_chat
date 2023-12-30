@@ -91,6 +91,8 @@ document.focusNext();
 const colorDict = {
   brightBlue: "^B",
   brightCyan: "^C",
+  brightWhite: "^W",
+  white: "^w",
 };
 
 export const displayBuilder = () =>

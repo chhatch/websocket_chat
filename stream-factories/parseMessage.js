@@ -19,6 +19,7 @@ export const parseMessageBuilder = (label) =>
         let color = "brightCyan";
 
         if (from === "Server") color = "brightBlue";
+        if (from === "You") color = "white";
 
         const string = `${from}: ${data}\n`;
         const displayInput = buildDisplayInput({
