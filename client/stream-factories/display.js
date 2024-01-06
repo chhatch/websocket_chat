@@ -105,7 +105,7 @@ const chatInputBorder = new termkit.Border({
 });
 
 // ascii art box
-const textBox = new termkit.TextBox({
+const artBox = new termkit.TextBox({
   contentHasMarkup: true,
   parent: document,
   scrollable: true,
@@ -118,8 +118,8 @@ const textBox = new termkit.TextBox({
 });
 
 // art box border
-const textBoxBorder = new termkit.Border({
-  parent: textBox,
+const artBoxBorder = new termkit.Border({
+  parent: artBox,
   color: "blue",
   bgColor: "green",
 });
@@ -142,7 +142,9 @@ export const displayBuilder = () =>
       if (type === "text") {
         chatBox.appendLog(` ${colorDict[color]}${data}`);
       } else if (type === "ascii") {
-        textBox.appendLog(`${data.split("\n").join(`\n${colorDict[color]} `)}`);
+        // clear the art box
+        artBox.textBuffer.setText("");
+        artBox.appendLog(`${data.split("\n").join(`\n${colorDict[color]} `)}`);
       } else if (type === "volcano") {
         term.drawImage(data, { shrink: { width: 100, height: 100 } });
       } else console.error(`Unknown display type: ${type}`);
