@@ -1,5 +1,5 @@
 import { Transform } from "stream";
-import { safeParseJSON } from "../utils/index.js";
+import { safeParseJSON } from "../../utils/index.js";
 import fs from "fs";
 
 export const MessageStream = { parseMessageStream: null };

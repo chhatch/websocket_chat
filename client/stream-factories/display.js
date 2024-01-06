@@ -1,6 +1,6 @@
 import { Duplex, Writable } from "stream";
 import termkit from "terminal-kit";
-import { teardown } from "../teardown.js";
+import { teardown } from "../../teardown.js";
 
 // input duplex stream
 export const inputStream = new Duplex({

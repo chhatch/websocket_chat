@@ -1,8 +1,5 @@
 import { createWebSocketStream, WebSocketServer } from "ws";
-import { parseMessageBuilder } from "./stream-factories/index.js";
-import { parseInputBuilder } from "./stream-factories/index.js";
-import { teardown } from "./teardown.js";
-import { buildMessage } from "./utils/index.js";
+import { buildMessage } from "../utils/index.js";
 
 const wsServer = new WebSocketServer({ port: 8080 });
 const waitingClients = {};

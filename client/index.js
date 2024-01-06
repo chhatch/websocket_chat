@@ -5,7 +5,7 @@ import {
   displayBuilder,
   MessageStream,
 } from "./stream-factories/index.js";
-import { teardown } from "./teardown.js";
+import { teardown } from "../teardown.js";
 import { inputStream } from "./stream-factories/display.js";
 
 const [name = "rando", address = "ws://localhost:8080"] = process.argv.slice(2);

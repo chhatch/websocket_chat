@@ -1,5 +1,5 @@
 import internal, { Transform } from "stream";
-import { buildMessage } from "../utils/index.js";
+import { buildMessage } from "../../utils/index.js";
 import { MessageStream } from "./parseMessage.js";
 
 export const parseInputBuilder = (label, ws) =>
