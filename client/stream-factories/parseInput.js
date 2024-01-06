@@ -1,4 +1,4 @@
-import internal, { Transform } from "stream";
+import { Transform } from "stream";
 import { buildMessage } from "../../utils/index.js";
 import { MessageStream } from "./parseMessage.js";
 

@@ -1,8 +1,11 @@
 import { createWebSocketStream, WebSocketServer } from "ws";
 import { buildMessage } from "../utils/index.js";
-import { parseMessageBuilder } from "./stream-factories/index.js";
+import {
+  parseInputBuilder,
+  parseMessageBuilder,
+} from "./stream-factories/index.js";
 
-const wsServer = new WebSocketServer({ port: 8080 });
+const wsServer = new WebSocketServer({ port: 8080, clientTracking: true });
 const waitingClients = {};
 let id = 0;
 
@@ -46,3 +49,5 @@ wsServer.on("connection", (ws) => {
 });
 
 console.log("Server online.");
+
+process.stdin.pipe(parseInputBuilder(wsServer));
