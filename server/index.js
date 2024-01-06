@@ -53,6 +53,6 @@ wsServer.on("connection", (ws) => {
   console.log("Client connected.");
 });
 
-console.log("Server online.");
+console.log(`Server listening on port ${port}...`);
 
 process.stdin.pipe(parseInputBuilder(wsServer));
