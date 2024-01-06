@@ -72,6 +72,9 @@ const artDict = {
   cleric: { path: "./assets/cleric.txt", color: "brightYellow" },
   ogre: { path: "./assets/ogre.txt", color: "green" },
   punch: { path: "./assets/punch.txt", color: "red" },
+  moon: { path: "./assets/moon.txt", color: "brightWhite" },
+  sun: { path: "./assets/sun.txt", color: "brightYellow" },
+  storm: { path: "./assets/storm.txt", color: "brightBlue" },
 };
 
 function getCleric() {
