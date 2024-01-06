@@ -11,7 +11,7 @@ import { inputStream } from "./stream-factories/display.js";
 const [name = "rando", address = "ws://localhost:8080"] = process.argv.slice(2);
 // console.log(`Connecting to ${address} as ${name}...`);
 
-const ws = new WebSocket("ws://localhost:8080");
+const ws = new WebSocket(address);
 
 ws.on("error", console.error);
 
