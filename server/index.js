@@ -14,7 +14,10 @@ wsServer.on("connection", (ws) => {
     console.log("Connection closed.");
   });
 
-  const client1 = createWebSocketStream(ws, { encoding: "utf8" });
+  const wsStream = createWebSocketStream(ws, { encoding: "utf8" });
+  const client1Parser = parseMessageBuilder(wsStream);
+  const client1 = { writeStream: wsStream };
+  client1.readStream = wsStream.pipe(client1Parser);
 
   const waitingClientKeys = Object.keys(waitingClients);
 
@@ -24,20 +27,17 @@ wsServer.on("connection", (ws) => {
 
     delete waitingClients[clientKey];
 
-    const client1Parser = parseMessageBuilder(client1);
-    const client2Parser = parseMessageBuilder(client2);
-
-    client1.pipe(client1Parser).pipe(client2);
-    client2.pipe(client2Parser).pipe(client1);
-    client2.write(
+    client1.readStream.pipe(client2.writeStream);
+    client2.readStream.pipe(client1.writeStream);
+    client2.writeStream.write(
       buildMessage("text", "Another player has joined!\n", "Server")
     );
-    client1.write(
+    client1.writeStream.write(
       buildMessage("text", "You have joined another player!\n", "Server")
     );
   } else {
     waitingClients[wsId] = client1;
-    client1.write(
+    client1.writeStream.write(
       buildMessage("text", "Waiting for another player...", "Server")
     );
   }
