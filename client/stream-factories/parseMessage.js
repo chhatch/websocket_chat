@@ -39,28 +39,13 @@ export const parseMessageBuilder = (label) =>
       }
       // handle ascii art
       else if (type === "ascii") {
-        if (data === "cleric") {
-          const art = `\n${getCleric()}\n\n`;
+        const art = artDict[data];
+        if (art) {
+          const string = fs.readFileSync(art.path, "utf8");
           const displayInput = buildDisplayInput({
             type,
-            data: art,
-            color: "brightYellow",
-          });
-          this.push(displayInput);
-        } else if (data === "ogre") {
-          const art = `\n${getOgre()}\n\n`;
-          const displayInput = buildDisplayInput({
-            type,
-            data: art,
-            color: "green",
-          });
-          this.push(displayInput);
-        } else if (data === "punch") {
-          const art = `\n${getPunch()}\n\n`;
-          const displayInput = buildDisplayInput({
-            type,
-            data: art,
-            color: "red",
+            data: string,
+            color: art.color,
           });
           this.push(displayInput);
         } else {
@@ -81,6 +66,13 @@ export const parseMessageBuilder = (label) =>
 function buildDisplayInput({ type, data, color }) {
   return { type, data, color };
 }
+
+// map art to file path and color
+const artDict = {
+  cleric: { path: "./assets/cleric.txt", color: "brightYellow" },
+  ogre: { path: "./assets/ogre.txt", color: "green" },
+  punch: { path: "./assets/punch.txt", color: "red" },
+};
 
 function getCleric() {
   return fs.readFileSync("./assets/cleric.txt", "utf8");

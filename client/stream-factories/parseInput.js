@@ -2,6 +2,8 @@ import { Transform } from "stream";
 import { buildMessage } from "../../utils/index.js";
 import { MessageStream } from "./parseMessage.js";
 
+const knownAsciiArt = ["cleric", "ogre", "punch"];
+
 export const parseInputBuilder = (label, ws) =>
   new Transform({
     transform(chunk, encoding, next) {
@@ -19,14 +21,10 @@ export const parseInputBuilder = (label, ws) =>
       }
       // send ascii art
       else if (string[0] === ":") {
-        if (string === ":cleric") {
-          this.push(buildMessage("ascii", "cleric"));
-        } else if (string === ":ogre") {
-          this.push(buildMessage("ascii", "ogre"));
-        } else if (string === ":punch") {
-          this.push(buildMessage("ascii", "punch"));
-        } else if (string === ":volcano") {
-          this.push(buildMessage("volcano", "assets/volcano.png"));
+        const art = string.slice(1);
+        if (knownAsciiArt.includes(art)) {
+          const outGoingMessage = buildMessage("ascii", art, label);
+          this.push(outGoingMessage);
         } else {
           console.log(`Unknown ascii art: ${string.slice(1)}`);
         }
