@@ -11,6 +11,8 @@ export const parseInputBuilder = (label, ws) =>
       if (string[0] === "/") {
         if (string === "/close") {
           ws.close();
+        } else if (string === "/look") {
+          this.push(buildMessage("server_command", "look"));
         } else {
           console.log(`Unknown command: ${string.slice(1)}`);
         }
