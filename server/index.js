@@ -6,7 +6,9 @@ import {
 } from "./stream-factories/index.js";
 import { clientsConnected } from "./clients.js";
 
-const wsServer = new WebSocketServer({ port: 8080, clientTracking: true });
+const [port = 8080] = process.argv.slice(2);
+
+const wsServer = new WebSocketServer({ port, clientTracking: true });
 const waitingClients = {};
 let id = 0;
 
