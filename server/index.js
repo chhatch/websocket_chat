@@ -4,6 +4,7 @@ import {
   parseInputBuilder,
   parseMessageBuilder,
 } from "./stream-factories/index.js";
+import { clientsConnected } from "./clients.js";
 
 const wsServer = new WebSocketServer({ port: 8080, clientTracking: true });
 const waitingClients = {};
@@ -14,6 +15,7 @@ wsServer.on("connection", (ws) => {
   ws.on("error", console.error);
   ws.on("close", () => {
     delete waitingClients[wsId];
+    delete clientsConnected[wsId];
     console.log("Connection closed.");
   });
 
@@ -45,6 +47,7 @@ wsServer.on("connection", (ws) => {
     );
   }
 
+  clientsConnected[wsId] = client1;
   console.log("Client connected.");
 });
 

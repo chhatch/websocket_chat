@@ -1,6 +1,7 @@
 import { Writable } from "stream";
 import { buildMessage } from "../../utils/index.js";
 import { MessageStream } from "./parseMessage.js";
+import { clientsWritable } from "../clients.js";
 
 export const parseInputBuilder = (wsServer) =>
   new Writable({
@@ -20,7 +21,11 @@ export const parseInputBuilder = (wsServer) =>
           console.log(`Unknown command: ${string.slice(1)}`);
         }
       }
-
+      // send text
+      else {
+        const outGoingMessage = buildMessage("text", string, "Gods");
+        clientsWritable.write(outGoingMessage);
+      }
       next();
     },
   });

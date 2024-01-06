@@ -8,16 +8,19 @@ export const parseMessageBuilder = (label) =>
   new Transform({
     objectMode: true,
     transform(chunk, encoding, next) {
-      const {
-        type,
+      let type,
         data,
-        from = "Received",
-      } = safeParseJSON(chunk.toString().trim());
+        from = "Received";
+      ({ type, data, from } = safeParseJSON(chunk.toString().trim()));
 
       // handle text
       if (type === "text") {
         let color = "brightCyan";
 
+        if (from === "Gods") {
+          color = "magenta";
+          from = "A voice out of the void";
+        }
         if (from === "Server") color = "brightBlue";
         if (from === "World") color = "green";
         if (from === "You") color = "white";

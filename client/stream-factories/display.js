@@ -130,6 +130,7 @@ const colorDict = {
   brightWhite: "^W",
   brightYellow: "^Y",
   green: "^g",
+  magenta: "^m",
   red: "^r",
   white: "^w",
 };
