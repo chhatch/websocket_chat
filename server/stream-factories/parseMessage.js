@@ -18,7 +18,7 @@ export const parseMessageBuilder = (client) =>
         if (data === "look") {
           const description =
             "You are in a room. There is a door to the north.";
-          const outGoingMessage = buildMessage("text", description, "Server");
+          const outGoingMessage = buildMessage("text", description, "World");
           client.write(Buffer.from(outGoingMessage));
         } else {
           console.log(`Unknown server command: ${data}`);
