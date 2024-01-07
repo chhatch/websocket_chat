@@ -91,10 +91,24 @@ export const parseMessageBuilder = (clientId) => {
         }
       } else if (type === "text") {
         const outGoingMessage = buildMessage("text", data, from);
-        Object.entries(clientsConnected).forEach(([id, client]) => {
-          if (id !== `${clientId}`)
+        const playersInRoom = Object.entries(clientsConnected).filter(
+          ([id, otherClient]) =>
+            id !== `${client.id}` &&
+            otherClient.player.roomId === client.player.roomId
+        );
+
+        if (playersInRoom.length) {
+          playersInRoom.forEach(([id, client]) => {
             client.writeStream.write(Buffer.from(outGoingMessage));
-        });
+          });
+        } else {
+          const noOneToHearMessage = buildMessage(
+            "text",
+            "There is no one here to hear you.",
+            "World"
+          );
+          client.writeStream.write(Buffer.from(noOneToHearMessage));
+        }
       } else {
         console.log(
           `Received unrecognized message.\ntype: ${type}\nfrom: ${from}\ndata: ${data}`
