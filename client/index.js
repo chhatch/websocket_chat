@@ -5,7 +5,7 @@ import {
   displayBuilder,
   MessageStream,
 } from "./stream-factories/index.js";
-import { teardown } from "../teardown.js";
+import { fixCase } from "../fixCase.js";
 import { inputStream } from "./stream-factories/display.js";
 
 const [name = "rando", address = "ws://localhost:8080"] = process.argv.slice(2);
@@ -21,7 +21,7 @@ ws.on("open", () => {
 
 ws.on("close", () => {
   // console.log("Connection closed.");
-  teardown();
+  fixCase();
 });
 MessageStream.parseMessageStream = parseMessageBuilder(name);
 
