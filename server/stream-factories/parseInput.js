@@ -19,6 +19,18 @@ const knownStates = {
     description: "The sun shines brightly overhead.",
   },
 };
+const knownCommands = {
+  close: {
+    description: "Shtudown the game server",
+    usage: "/close",
+    action: (wsServer) => {
+      console.log("Shutting down server..");
+      wsServer.close(() => process.exit());
+      console.log("Closing connections..");
+      wsServer.clients.forEach((client) => client.close());
+    },
+  },
+};
 
 export const parseInputBuilder = (wsServer) =>
   new Writable({
@@ -27,13 +39,9 @@ export const parseInputBuilder = (wsServer) =>
 
       // commands
       if (string[0] === "/") {
-        if (string === "/close") {
-          console.log("Shutting down server..");
-          wsServer.close(() => process.exit());
-          console.log("Closing connections..");
-          wsServer.clients.forEach((client) => client.close());
-        } else if (string === "/look") {
-          this.push(buildMessage("server_command", "look"));
+        const command = knownCommands[string.slice(1)];
+        if (command) {
+          command.action(wsServer);
         } else {
           console.log(`Unknown command: ${string.slice(1)}`);
         }

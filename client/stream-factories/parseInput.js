@@ -3,6 +3,18 @@ import { buildMessage } from "../../utils/index.js";
 import { MessageStream } from "./parseMessage.js";
 
 const knownAsciiArt = ["cleric", "ogre", "punch"];
+const knownCommands = {
+  close: {
+    description: "Exit the game",
+    usage: "/close",
+    action: (ws) => ws.close(),
+  },
+  look: {
+    description: "Look around",
+    usage: "/look",
+    action: (_, stream) => stream.push(buildMessage("server_command", "look")),
+  },
+};
 
 export const parseInputBuilder = (label, ws) =>
   new Transform({
@@ -11,10 +23,9 @@ export const parseInputBuilder = (label, ws) =>
 
       // commands
       if (string[0] === "/") {
-        if (string === "/close") {
-          ws.close();
-        } else if (string === "/look") {
-          this.push(buildMessage("server_command", "look"));
+        const command = knownCommands[string.slice(1)];
+        if (command) {
+          command.action(ws, this);
         } else {
           console.log(`Unknown command: ${string.slice(1)}`);
         }
