@@ -30,6 +30,18 @@ const knownCommands = {
       wsServer.clients.forEach((client) => client.close());
     },
   },
+  help: {
+    description: "List available commands",
+    usage: "/help",
+    action: () => {
+      const helpMessage =
+        "Help:\n" +
+        Object.values(knownCommands)
+          .map((command) => `${command.usage} - ${command.description}`)
+          .join("\n");
+      console.log(helpMessage);
+    },
+  },
 };
 
 export const parseInputBuilder = (wsServer) =>
