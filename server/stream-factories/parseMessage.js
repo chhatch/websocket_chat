@@ -14,27 +14,58 @@ const knownCommands = {
     client.writeStream.write(Buffer.from(outGoingMessage));
   },
   move: (client, [direction]) => {
-    const roomId = client.player.roomId;
-    const room = map[roomId];
+    const oldRoomId = client.player.roomId;
+    const room = map[oldRoomId];
     const exit = room.exits[direction];
     if (exit) {
-      client.player.roomId = exit.id;
+      const newRoomId = exit.id;
+      client.player.roomId = newRoomId;
       const description = exit.description;
-      const outGoingMessage1 = buildMessage(
+
+      // tell the player they entered a new room
+      const playerGoingMessage1 = buildMessage(
         "text",
         `You enter the room to the ${direction}.`,
         "World"
       );
-      const outGoingMessage2 = buildMessage("text", description, "World");
-      client.writeStream.write(Buffer.from(outGoingMessage1));
-      client.writeStream.write(Buffer.from(outGoingMessage2));
+      const playerGoingMessage2 = buildMessage("text", description, "World");
+      client.writeStream.write(Buffer.from(playerGoingMessage1));
+      client.writeStream.write(Buffer.from(playerGoingMessage2));
+
+      // tell the other players someone entered the room
+      const enterMessage = buildMessage(
+        "text",
+        `${client.player.name} enters the room.`,
+        "World"
+      );
+      const playersInNewRoom = Object.entries(clientsConnected).filter(
+        ([id, otherClient]) =>
+          id !== `${client.id}` && otherClient.player.roomId === newRoomId
+      );
+      playersInNewRoom.forEach(([id, client]) => {
+        client.writeStream.write(Buffer.from(enterMessage));
+      });
+
+      // tell the other players someone left the room
+      const leaveMessage = buildMessage(
+        "text",
+        `${client.player.name} leaves the room.`,
+        "World"
+      );
+      const playersInOldRoom = Object.entries(clientsConnected).filter(
+        ([id, otherClient]) =>
+          id !== `${client.id}` && otherClient.player.roomId === oldRoomId
+      );
+      playersInOldRoom.forEach(([id, client]) => {
+        client.writeStream.write(Buffer.from(leaveMessage));
+      });
     } else {
-      const outGoingMessage = buildMessage(
+      const playerGoingMessage = buildMessage(
         "text",
         "You cannot go that way.",
         "World"
       );
-      client.writeStream.write(Buffer.from(outGoingMessage));
+      client.writeStream.write(Buffer.from(playerGoingMessage));
     }
   },
 };

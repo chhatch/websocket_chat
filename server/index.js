@@ -13,7 +13,7 @@ let id = 0;
 
 wsServer.on("connection", (ws) => {
   const wsId = id++;
-  const client = {};
+  const client = { id: wsId };
   clientsConnected[wsId] = client;
   ws.on("error", console.error);
   ws.on("close", () => {
