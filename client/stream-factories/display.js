@@ -140,11 +140,17 @@ export const displayBuilder = () =>
     objectMode: true,
     write({ type, data, color }, encoding, next) {
       if (type === "text") {
-        chatBox.appendLog(` ${colorDict[color]}${data}`);
+        chatBox.appendLog(
+          ` ${colorDict[color]}${data
+            .split("\n")
+            .join(`\n ${colorDict[color]}`)}`
+        );
       } else if (type === "ascii") {
         // clear the art box
         artBox.textBuffer.setText("");
-        artBox.appendLog(`${data.split("\n").join(`\n${colorDict[color]} `)}`);
+        artBox.appendLog(
+          `${colorDict[color]}${data.split("\n").join(`\n${colorDict[color]}`)}`
+        );
       } else if (type === "volcano") {
         term.drawImage(data, { shrink: { width: 100, height: 100 } });
       } else console.error(`Unknown display type: ${type}`);

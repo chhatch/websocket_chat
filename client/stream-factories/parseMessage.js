@@ -21,6 +21,7 @@ export const parseMessageBuilder = (label) =>
           color = "magenta";
           from = "A voice out of the void";
         }
+        if (from === "Help") color = "white";
         if (from === "Server") color = "brightBlue";
         if (from === "World") color = "green";
         if (from === "You") color = "white";

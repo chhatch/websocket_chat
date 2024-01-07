@@ -9,6 +9,18 @@ const knownCommands = {
     usage: "/close",
     action: (ws) => ws.close(),
   },
+  help: {
+    description: "List available commands",
+    usage: "/help",
+    action: (_, __, internalStream) => {
+      const helpMessage =
+        "\n" +
+        Object.values(knownCommands)
+          .map((command) => `${command.usage} - ${command.description}`)
+          .join("\n");
+      internalStream.write(buildMessage("text", helpMessage, "Help"));
+    },
+  },
   look: {
     description: "Look around",
     usage: "/look",
@@ -25,7 +37,7 @@ export const parseInputBuilder = (label, ws) =>
       if (string[0] === "/") {
         const command = knownCommands[string.slice(1)];
         if (command) {
-          command.action(ws, this);
+          command.action(ws, this, MessageStream.parseMessageStream);
         } else {
           console.log(`Unknown command: ${string.slice(1)}`);
         }
