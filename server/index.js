@@ -9,47 +9,34 @@ import { clientsConnected } from "./clients.js";
 const [port = 8080] = process.argv.slice(2);
 
 const wsServer = new WebSocketServer({ port, clientTracking: true });
-const waitingClients = {};
 let id = 0;
 
 wsServer.on("connection", (ws) => {
   const wsId = id++;
   ws.on("error", console.error);
   ws.on("close", () => {
-    delete waitingClients[wsId];
     delete clientsConnected[wsId];
     console.log("Connection closed.");
   });
 
   const wsStream = createWebSocketStream(ws, { encoding: "utf8" });
-  const client1Parser = parseMessageBuilder(wsStream);
-  const client1 = { writeStream: wsStream };
-  client1.readStream = wsStream.pipe(client1Parser);
+  const clientParser = parseMessageBuilder(wsId);
+  const client = { writeStream: wsStream };
+  client.readStream = wsStream.pipe(clientParser);
 
-  const waitingClientKeys = Object.keys(waitingClients);
-
-  if (waitingClientKeys.length > 0) {
-    const clientKey = waitingClientKeys[0];
-    const client2 = waitingClients[clientKey];
-
-    delete waitingClients[clientKey];
-
-    client1.readStream.pipe(client2.writeStream);
-    client2.readStream.pipe(client1.writeStream);
-    client2.writeStream.write(
-      buildMessage("text", "Another player has joined!\n", "Server")
-    );
-    client1.writeStream.write(
-      buildMessage("text", "You have joined another player!\n", "Server")
-    );
-  } else {
-    waitingClients[wsId] = client1;
-    client1.writeStream.write(
-      buildMessage("text", "Waiting for another player...", "Server")
-    );
-  }
-
-  clientsConnected[wsId] = client1;
+  clientsConnected[wsId] = client;
+  const otherPlayersOnline = Object.keys(clientsConnected).length - 1;
+  client.writeStream.write(
+    buildMessage(
+      "text",
+      `Welcome to MistFall Hollow.\n${
+        otherPlayersOnline
+          ? `There are ${otherPlayersOnline} other players online.`
+          : "You are all alone.."
+      }`,
+      "Server"
+    )
+  );
   console.log("Client connected.");
 });
 
