@@ -13,6 +13,8 @@ let id = 0;
 
 wsServer.on("connection", (ws) => {
   const wsId = id++;
+  const client = {};
+  clientsConnected[wsId] = client;
   ws.on("error", console.error);
   ws.on("close", () => {
     delete clientsConnected[wsId];
@@ -21,10 +23,12 @@ wsServer.on("connection", (ws) => {
 
   const wsStream = createWebSocketStream(ws, { encoding: "utf8" });
   const clientParser = parseMessageBuilder(wsId);
-  const client = { writeStream: wsStream };
+  client.writeStream = wsStream;
   client.readStream = wsStream.pipe(clientParser);
 
-  clientsConnected[wsId] = client;
+  // add player to client
+  client.player = { roomId: 0 };
+
   const otherPlayersOnline = Object.keys(clientsConnected).length - 1;
   client.writeStream.write(
     buildMessage(

@@ -2,6 +2,7 @@ import { Writable } from "stream";
 import { buildMessage, safeParseJSON } from "../../utils/index.js";
 import fs from "fs";
 import { clientsConnected } from "../clients.js";
+import { map } from "../map.js";
 
 export const MessageStream = { parseMessageStream: null };
 
@@ -18,8 +19,8 @@ export const parseMessageBuilder = (clientId) => {
       // handle server commands
       if (type === "server_command") {
         if (data === "look") {
-          const description =
-            "You are in a room. There is a door to the north.";
+          const roomId = client.player.roomId;
+          const description = map[roomId].description;
           const outGoingMessage = buildMessage("text", description, "World");
           client.writeStream.write(Buffer.from(outGoingMessage));
         } else {
