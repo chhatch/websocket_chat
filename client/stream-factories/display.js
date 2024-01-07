@@ -1,6 +1,6 @@
 import { Duplex, Writable } from "stream";
 import termkit from "terminal-kit";
-import { fixCase } from "../../fixCase.js";
+import { teardown } from "../../teardown.js";
 
 // input duplex stream
 export const inputStream = new Duplex({
@@ -159,7 +159,7 @@ term.on("key", function (key) {
       term.hideCursor(false);
       term.styleReset();
       term.clear();
-      fixCase();
+      teardown();
       process.exit();
       break;
   }
