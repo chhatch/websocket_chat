@@ -9,9 +9,9 @@ const canteen = buildItem(
   "canteen",
   "A canteen filled with water. It's heavy."
 );
-const pewterMug = buildItem("pewter mug", "A pewter mug. It's empty.");
+const pewterMug = buildItem("mug", "A pewter mug. It's empty.");
 
-export const items = [canteen].reduce((acc, item) => {
+export const items = [canteen, pewterMug].reduce((acc, item) => {
   acc[item.id] = item;
   acc[item.name] = item;
   return acc;

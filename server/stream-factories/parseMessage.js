@@ -3,6 +3,7 @@ import { buildMessage, safeParseJSON } from "../../utils/index.js";
 import fs from "fs";
 import { clientsConnected } from "../clients.js";
 import { map } from "../map.js";
+import { items } from "../items.js";
 
 export const MessageStream = { parseMessageStream: null };
 const look = (client, [direction] = []) => {
@@ -14,7 +15,9 @@ const look = (client, [direction] = []) => {
   if (items.length) {
     itemsDescription =
       "On the ground you see:\n" +
-      items.map(({ name, quantity }) => `${name} x${quantity}`).join("\n");
+      items
+        .map(({ item: { name }, quantity }) => `${name} x${quantity}`)
+        .join("\n");
   }
   const description = itemsDescription
     ? `${roomDescription}\n${itemsDescription}`
@@ -24,6 +27,42 @@ const look = (client, [direction] = []) => {
 };
 
 const knownCommands = {
+  get: (client, [itemName, quantity = 1]) => {
+    const roomId = client.player.roomId;
+    const room = map[roomId];
+    const item = room.items.find(({ item }) => item.name === itemName);
+    let responseMessage = `There is no ${itemName} to get.`;
+    if (item) {
+      const actualQuantity = Math.min(quantity, item.quantity);
+      // remove item from room
+      room.items = room.items.reduce((acc, entry) => {
+        if (entry.item.name === itemName) {
+          // update item quantity
+          entry.item.quantity -= actualQuantity;
+          // remove item if quantity is 0 or less
+          if (entry.item.quantity <= 0) {
+            return acc;
+          }
+          return entry;
+        }
+      }, []);
+      // add item to player inventory
+      const playerItem = client.player.inventory.find(
+        (item) => item.item.name === itemName
+      );
+      if (playerItem) {
+        playerItem.quantity += actualQuantity;
+      } else {
+        client.player.inventory.push({
+          item: items[itemName],
+          quantity: actualQuantity,
+        });
+      }
+      responseMessage = `You pick up ${actualQuantity} ${itemName}.`;
+    }
+    const outGoingMessage = buildMessage("text", responseMessage, "World");
+    client.writeStream.write(Buffer.from(outGoingMessage));
+  },
   inventory: (client) => {
     const inventory = client.player.inventory;
     // default message if inventory is empty

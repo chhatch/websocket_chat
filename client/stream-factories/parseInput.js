@@ -19,6 +19,15 @@ const knownCommands = {
     usage: "/close",
     action: (ws) => ws.close(),
   },
+  get: {
+    description: "Pick up an item",
+    usage: "/get <item> <quantity>, alias: g",
+    action: (_, stream, internalStream, [itemName, quantity = 1]) => {
+      stream.push(
+        buildMessage("server_command", `get ${itemName} ${quantity}`)
+      );
+    },
+  },
   help: {
     description: "List available commands",
     usage: "/help",
@@ -59,6 +68,8 @@ const knownCommands = {
 };
 
 const commandMapper = {
+  get: knownCommands.get,
+  g: knownCommands.get,
   inventory: knownCommands.inventory,
   i: knownCommands.inventory,
   look: knownCommands.look,

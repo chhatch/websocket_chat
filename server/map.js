@@ -17,7 +17,7 @@ const startingRoom = buildRoom(
 const nextRoom = buildRoom(
   roomId++,
   "You are in another room. There is a door to the south.",
-  [{ item: items["pewter mug"], quantity: 1 }]
+  [{ item: items["mug"], quantity: 1 }]
 );
 
 startingRoom.exits.north = nextRoom;
