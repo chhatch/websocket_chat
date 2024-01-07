@@ -32,3 +32,11 @@ const displayStream = displayBuilder();
 
 wsStream.pipe(parseMessageStream).pipe(displayStream);
 inputStream.pipe(parseInputStream).pipe(wsStream);
+
+// send initial look command
+wsStream.write(
+  JSON.stringify({
+    type: "server_command",
+    data: "look",
+  })
+);
