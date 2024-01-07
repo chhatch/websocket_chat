@@ -7,6 +7,22 @@ import { map } from "../map.js";
 export const MessageStream = { parseMessageStream: null };
 
 const knownCommands = {
+  inventory: (client) => {
+    const inventory = client.player.inventory;
+    // default message if inventory is empty
+    let inventoryMessage = "Your inventory is empty.";
+    if (inventory.length) {
+      inventoryMessage = inventory
+        .map(({ item, quantity }) => `${item.name} x${quantity}`)
+        .join("\n");
+    }
+    const outGoingMessage = buildMessage(
+      "text",
+      inventoryMessage,
+      "Your Inventory"
+    );
+    client.writeStream.write(Buffer.from(outGoingMessage));
+  },
   look: (client, [direction]) => {
     const roomId = client.player.roomId;
     const description = map[roomId].description;

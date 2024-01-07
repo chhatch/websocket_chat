@@ -5,6 +5,7 @@ import {
   parseMessageBuilder,
 } from "./stream-factories/index.js";
 import { clientsConnected } from "./clients.js";
+import { items } from "./items.js";
 
 const [port = 8080] = process.argv.slice(2);
 
@@ -27,7 +28,7 @@ wsServer.on("connection", (ws) => {
   client.readStream = wsStream.pipe(clientParser);
 
   // add player to client
-  client.player = { roomId: 0 };
+  client.player = { roomId: 0, inventory: [{ item: items[0], quantity: 1 }] };
 
   const otherPlayersOnline = Object.keys(clientsConnected).length - 1;
   client.writeStream.write(

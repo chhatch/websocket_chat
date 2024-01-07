@@ -31,6 +31,13 @@ const knownCommands = {
       internalStream.write(buildMessage("text", helpMessage, "Help"));
     },
   },
+  inventory: {
+    description: "List your inventory",
+    usage: "/inventory, alias: i",
+    action: (_, stream) => {
+      stream.push(buildMessage("server_command", "inventory"));
+    },
+  },
   look: {
     description: "Look around",
     usage: "/look",
@@ -52,6 +59,8 @@ const knownCommands = {
 };
 
 const commandMapper = {
+  inventory: knownCommands.inventory,
+  i: knownCommands.inventory,
   move: knownCommands.move,
   m: knownCommands.move,
 };
