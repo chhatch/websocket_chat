@@ -19,6 +19,15 @@ const knownCommands = {
     usage: "/close",
     action: (ws) => ws.close(),
   },
+  drop: {
+    description: "Drop an item",
+    usage: "/drop <item> <quantity>, alias: d",
+    action: (_, stream, internalStream, [itemName, quantity = 1]) => {
+      stream.push(
+        buildMessage("server_command", `drop ${itemName} ${quantity}`)
+      );
+    },
+  },
   get: {
     description: "Pick up an item",
     usage: "/get <item> <quantity>, alias: g",
@@ -68,6 +77,8 @@ const knownCommands = {
 };
 
 const commandMapper = {
+  drop: knownCommands.drop,
+  d: knownCommands.drop,
   get: knownCommands.get,
   g: knownCommands.get,
   inventory: knownCommands.inventory,

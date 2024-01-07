@@ -27,6 +27,37 @@ const look = (client, [direction] = []) => {
 };
 
 const knownCommands = {
+  drop: (client, [itemName, quantity = 1]) => {
+    const roomId = client.player.roomId;
+    const room = map[roomId];
+    const itemEntry = client.player.inventory.find(
+      (item) => item.item.name === itemName
+    );
+    let responseMessage = `You do not have a ${itemName} to drop.`;
+    if (itemEntry) {
+      const actualQuantity = Math.min(quantity, itemEntry.quantity);
+      // remove item from player inventory
+      itemEntry.quantity -= actualQuantity;
+      // remove item if quantity is 0 or less
+      if (itemEntry.quantity <= 0) {
+        client.player.inventory = client.player.inventory.filter(
+          (entry) => entry.item.name !== itemName
+        );
+      }
+      // add item to room
+      const roomItemEntry = room.items.find(
+        (item) => item.item.name === itemName
+      );
+      if (roomItemEntry) {
+        roomItemEntry.quantity += actualQuantity;
+      } else {
+        room.items.push({ item: items[itemName], quantity: actualQuantity });
+      }
+      responseMessage = `You drop ${actualQuantity} ${itemName}.`;
+    }
+    const outGoingMessage = buildMessage("text", responseMessage, "World");
+    client.writeStream.write(Buffer.from(outGoingMessage));
+  },
   get: (client, [itemName, quantity = 1]) => {
     const roomId = client.player.roomId;
     const room = map[roomId];
@@ -35,17 +66,11 @@ const knownCommands = {
     if (item) {
       const actualQuantity = Math.min(quantity, item.quantity);
       // remove item from room
-      room.items = room.items.reduce((acc, entry) => {
-        if (entry.item.name === itemName) {
-          // update item quantity
-          entry.item.quantity -= actualQuantity;
-          // remove item if quantity is 0 or less
-          if (entry.item.quantity <= 0) {
-            return acc;
-          }
-          return entry;
-        }
-      }, []);
+      item.quantity -= actualQuantity;
+      // remove item if quantity is 0 or less
+      if (item.quantity <= 0) {
+        room.items = room.items.filter((entry) => entry.item.name !== itemName);
+      }
       // add item to player inventory
       const playerItem = client.player.inventory.find(
         (item) => item.item.name === itemName
