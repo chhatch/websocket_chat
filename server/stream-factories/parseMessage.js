@@ -6,6 +6,39 @@ import { map } from "../map.js";
 
 export const MessageStream = { parseMessageStream: null };
 
+const knownCommands = {
+  look: (client, [direction]) => {
+    const roomId = client.player.roomId;
+    const description = map[roomId].description;
+    const outGoingMessage = buildMessage("text", description, "World");
+    client.writeStream.write(Buffer.from(outGoingMessage));
+  },
+  move: (client, [direction]) => {
+    const roomId = client.player.roomId;
+    const room = map[roomId];
+    const exit = room.exits[direction];
+    if (exit) {
+      client.player.roomId = exit.id;
+      const description = exit.description;
+      const outGoingMessage1 = buildMessage(
+        "text",
+        `You enter the room to the ${direction}.`,
+        "World"
+      );
+      const outGoingMessage2 = buildMessage("text", description, "World");
+      client.writeStream.write(Buffer.from(outGoingMessage1));
+      client.writeStream.write(Buffer.from(outGoingMessage2));
+    } else {
+      const outGoingMessage = buildMessage(
+        "text",
+        "You cannot go that way.",
+        "World"
+      );
+      client.writeStream.write(Buffer.from(outGoingMessage));
+    }
+  },
+};
+
 export const parseMessageBuilder = (clientId) => {
   const client = clientsConnected[clientId];
   return new Writable({
@@ -18,11 +51,10 @@ export const parseMessageBuilder = (clientId) => {
 
       // handle server commands
       if (type === "server_command") {
-        if (data === "look") {
-          const roomId = client.player.roomId;
-          const description = map[roomId].description;
-          const outGoingMessage = buildMessage("text", description, "World");
-          client.writeStream.write(Buffer.from(outGoingMessage));
+        const [commandName, ...args] = data.split(" ");
+        const command = knownCommands[commandName];
+        if (command) {
+          command(client, args);
         } else {
           console.log(`Unknown server command: ${data}`);
         }

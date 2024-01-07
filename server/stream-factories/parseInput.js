@@ -21,7 +21,7 @@ const knownStates = {
 };
 const knownCommands = {
   close: {
-    description: "Shtudown the game server",
+    description: "Shutdown the game server",
     usage: "/close",
     action: (wsServer) => {
       console.log("Shutting down server..");

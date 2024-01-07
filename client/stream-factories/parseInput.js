@@ -3,6 +3,7 @@ import { buildMessage } from "../../utils/index.js";
 import { MessageStream } from "./parseMessage.js";
 
 const knownAsciiArt = ["cleric", "ogre", "punch"];
+// give access to ws, stream, and internalStream with closure
 const knownCommands = {
   close: {
     description: "Exit the game",
@@ -26,6 +27,18 @@ const knownCommands = {
     usage: "/look",
     action: (_, stream) => stream.push(buildMessage("server_command", "look")),
   },
+  move: {
+    description: "Move in a direction",
+    usage: "/move <direction>",
+    action: (_, stream, internalStream, [direction]) => {
+      if (!direction) {
+        internalStream.write(
+          buildMessage("text", "You must specify a direction to move.", "Error")
+        );
+      }
+      stream.push(buildMessage("server_command", `move ${direction}`));
+    },
+  },
 };
 
 export const parseInputBuilder = (label, ws) =>
@@ -35,9 +48,10 @@ export const parseInputBuilder = (label, ws) =>
 
       // commands
       if (string[0] === "/") {
-        const command = knownCommands[string.slice(1)];
+        const [commandName, ...args] = string.slice(1).split(" ");
+        const command = knownCommands[commandName];
         if (command) {
-          command.action(ws, this, MessageStream.parseMessageStream);
+          command.action(ws, this, MessageStream.parseMessageStream, args);
         } else {
           console.log(`Unknown command: ${string.slice(1)}`);
         }
