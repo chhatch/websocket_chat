@@ -33,7 +33,7 @@ wsServer.on("connection", (ws) => {
   client.writeStream.write(
     buildMessage(
       "text",
-      `Welcome to MistFall Hollow.\n${
+      `Welcome to Mistfall Hollow. The Whispering Fen awaits.\n${
         otherPlayersOnline
           ? `There are ${otherPlayersOnline} other players online.`
           : "You are all alone.."

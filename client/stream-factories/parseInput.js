@@ -2,6 +2,15 @@ import { Transform } from "stream";
 import { buildMessage } from "../../utils/index.js";
 import { MessageStream } from "./parseMessage.js";
 
+const directionMapper = {
+  n: "north",
+  e: "east",
+  s: "south",
+  w: "west",
+  u: "up",
+  d: "down",
+};
+
 const knownAsciiArt = ["cleric", "ogre", "punch"];
 // give access to ws, stream, and internalStream with closure
 const knownCommands = {
@@ -29,8 +38,9 @@ const knownCommands = {
   },
   move: {
     description: "Move in a direction",
-    usage: "/move <direction>",
-    action: (_, stream, internalStream, [direction]) => {
+    usage: "/move <direction>, alias: m",
+    action: (_, stream, internalStream, [inputDirection]) => {
+      const direction = directionMapper[inputDirection];
       if (!direction) {
         internalStream.write(
           buildMessage("text", "You must specify a direction to move.", "Error")
@@ -41,6 +51,11 @@ const knownCommands = {
   },
 };
 
+const commandMapper = {
+  move: knownCommands.move,
+  m: knownCommands.move,
+};
+
 export const parseInputBuilder = (label, ws) =>
   new Transform({
     transform(chunk, encoding, next) {
@@ -49,7 +64,7 @@ export const parseInputBuilder = (label, ws) =>
       // commands
       if (string[0] === "/") {
         const [commandName, ...args] = string.slice(1).split(" ");
-        const command = knownCommands[commandName];
+        const command = commandMapper[commandName];
         if (command) {
           command.action(ws, this, MessageStream.parseMessageStream, args);
         } else {
