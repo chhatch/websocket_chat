@@ -61,6 +61,8 @@ const knownCommands = {
 const commandMapper = {
   inventory: knownCommands.inventory,
   i: knownCommands.inventory,
+  look: knownCommands.look,
+  l: knownCommands.look,
   move: knownCommands.move,
   m: knownCommands.move,
 };

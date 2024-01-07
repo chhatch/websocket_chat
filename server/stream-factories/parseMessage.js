@@ -5,6 +5,23 @@ import { clientsConnected } from "../clients.js";
 import { map } from "../map.js";
 
 export const MessageStream = { parseMessageStream: null };
+const look = (client, [direction] = []) => {
+  const roomId = client.player.roomId;
+  const roomDescription = map[roomId].description;
+  // describe items in the room
+  const items = map[roomId].items;
+  let itemsDescription = false;
+  if (items.length) {
+    itemsDescription =
+      "On the ground you see:\n" +
+      items.map(({ name, quantity }) => `${name} x${quantity}`).join("\n");
+  }
+  const description = itemsDescription
+    ? `${roomDescription}\n${itemsDescription}`
+    : roomDescription;
+  const outGoingMessage = buildMessage("text", description, "World");
+  client.writeStream.write(Buffer.from(outGoingMessage));
+};
 
 const knownCommands = {
   inventory: (client) => {
@@ -23,12 +40,7 @@ const knownCommands = {
     );
     client.writeStream.write(Buffer.from(outGoingMessage));
   },
-  look: (client, [direction]) => {
-    const roomId = client.player.roomId;
-    const description = map[roomId].description;
-    const outGoingMessage = buildMessage("text", description, "World");
-    client.writeStream.write(Buffer.from(outGoingMessage));
-  },
+  look,
   move: (client, [direction]) => {
     const oldRoomId = client.player.roomId;
     const room = map[oldRoomId];
@@ -44,10 +56,8 @@ const knownCommands = {
         `You enter the room to the ${direction}.`,
         "World"
       );
-      const playerGoingMessage2 = buildMessage("text", description, "World");
       client.writeStream.write(Buffer.from(playerGoingMessage1));
-      client.writeStream.write(Buffer.from(playerGoingMessage2));
-
+      look(client);
       // tell the other players someone entered the room
       const enterMessage = buildMessage(
         "text",
