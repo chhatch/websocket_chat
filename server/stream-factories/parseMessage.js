@@ -165,7 +165,8 @@ const knownCommands = {
       // tell the player they entered a new room
       const playerGoingMessage1 = buildMessage(
         "text",
-        `You enter the room to the ${direction}.`,
+        `---
+You move to the ${direction}.`,
         "World"
       );
       client.writeStream.write(Buffer.from(playerGoingMessage1));
@@ -173,7 +174,7 @@ const knownCommands = {
       // tell the other players someone entered the room
       const enterMessage = buildMessage(
         "text",
-        `${client.player.name} enters the room.`,
+        `${client.player.name} enters the area.`,
         "World"
       );
       const playersInNewRoom = Object.entries(clientsConnected).filter(
@@ -187,7 +188,7 @@ const knownCommands = {
       // tell the other players someone left the room
       const leaveMessage = buildMessage(
         "text",
-        `${client.player.name} leaves the room.`,
+        `${client.player.name} leaves the area.`,
         "World"
       );
       const playersInOldRoom = Object.entries(clientsConnected).filter(
