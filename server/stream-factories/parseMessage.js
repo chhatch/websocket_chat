@@ -17,7 +17,10 @@ const look = (client, [direction] = []) => {
   );
   const playersDescription = playersInRoom.length
     ? playersInRoom
-        .map(([id, otherClient]) => otherClient.player.name)
+        .map(
+          ([id, otherClient]) =>
+            `${otherClient.player.name}, a fellow adventurer`
+        )
         .join("\n")
     : "";
   const npcsInRoom = Object.values(npcs).filter((npc) => npc.roomId === roomId);
@@ -214,7 +217,7 @@ You move to the ${direction}.`,
       // tell the other players someone left the room
       const leaveMessage = buildMessage(
         "text",
-        `${client.player.name} leaves the area.`,
+        `${client.player.name} leaves the area heading ${direction}.`,
         "World"
       );
       const playersInOldRoom = Object.entries(clientsConnected).filter(
@@ -236,6 +239,24 @@ You move to the ${direction}.`,
   name: (client, [name]) => {
     client.player.name = name;
     console.log(`${name} has joined the game.`);
+  },
+  talk: (client, [npcName]) => {
+    const roomId = client.player.roomId;
+    const npc = Object.values(npcs).filter((npc) =>
+      npc.tags.includes(npcName)
+    )[0];
+    if (npc && npc.roomId === roomId) {
+      const message = npc.messages.default;
+      const outGoingMessage = buildMessage("text", message, npc.name);
+      client.writeStream.write(Buffer.from(outGoingMessage));
+    } else {
+      const outGoingMessage = buildMessage(
+        "text",
+        `There is no ${npcName} here.`,
+        "World"
+      );
+      client.writeStream.write(Buffer.from(outGoingMessage));
+    }
   },
 };
 

@@ -1,8 +1,14 @@
-const buildNpc = ({ roomId, name, description, inventory, messages }) => ({
-  tags: [],
+const buildNpc = ({
   roomId,
   name,
-  tags: [],
+  description,
+  inventory,
+  messages,
+  tags,
+}) => ({
+  roomId,
+  name,
+  tags,
   description,
   inventory,
   messages,
@@ -64,7 +70,7 @@ const cartographer = buildNpc({
   inventory: [],
   messages: {
     default: `Huh? Oh, I didn't see you there. I'm Astrid the cartographer.
-I waited many years to explore this town.`,
+  I've waited many years to explore this town.`,
   },
 });
 

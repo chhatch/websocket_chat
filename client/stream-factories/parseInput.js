@@ -89,6 +89,13 @@ const knownCommands = {
       stream.push(buildMessage("server_command", `move ${direction}`));
     },
   },
+  talk: {
+    description: "Talk to an NPC",
+    usage: "/talk <npc>, alias: t",
+    action: (_, stream, internalStream, [npc]) => {
+      stream.push(buildMessage("server_command", `talk ${npc}`));
+    },
+  },
 };
 
 const commandMapper = {
@@ -108,6 +115,8 @@ const commandMapper = {
   l: knownCommands.look,
   move: knownCommands.move,
   m: knownCommands.move,
+  talk: knownCommands.talk,
+  t: knownCommands.talk,
 };
 
 export const parseInputBuilder = (label, ws) =>
