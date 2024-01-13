@@ -158,6 +158,9 @@ const knownCommands = {
       client.writeStream.write(Buffer.from(playerGoingMessage));
     }
   },
+  name: (client, [name]) => {
+    client.player.name = name;
+  },
 };
 
 export const parseMessageBuilder = (clientId) => {

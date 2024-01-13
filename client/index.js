@@ -33,6 +33,14 @@ const displayStream = displayBuilder();
 wsStream.pipe(parseMessageStream).pipe(displayStream);
 inputStream.pipe(parseInputStream).pipe(wsStream);
 
+// send command to set name
+wsStream.write(
+  JSON.stringify({
+    type: "server_command",
+    data: `name ${name}`,
+  })
+);
+
 // send initial look command
 wsStream.write(
   JSON.stringify({
