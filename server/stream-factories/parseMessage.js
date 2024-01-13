@@ -88,6 +88,54 @@ const knownCommands = {
     const outGoingMessage = buildMessage("text", responseMessage, "World");
     client.writeStream.write(Buffer.from(outGoingMessage));
   },
+  give: (client, [player, itemName, quantity = 1]) => {
+    const roomId = client.player.roomId;
+    const room = map[roomId];
+    const itemEntry = client.player.inventory.find(
+      (entry) => entry.item.name === itemName
+    );
+    let responseMessage = `You do not have a ${itemName} to give.`;
+    if (itemEntry) {
+      const actualQuantity = Math.min(quantity, itemEntry.quantity);
+      // remove item from player inventory
+      itemEntry.quantity -= actualQuantity;
+      // remove item if quantity is 0 or less
+      if (itemEntry.quantity <= 0) {
+        client.player.inventory = client.player.inventory.filter(
+          (entry) => entry.item.name !== itemName
+        );
+      }
+      // add item to player inventory
+      const otherClient = Object.values(clientsConnected).find(
+        (otherClient) => otherClient.player.name === player
+      );
+      if (otherClient) {
+        const otherClientItem = otherClient.player.inventory.find(
+          (item) => item.item.name === itemName
+        );
+        if (otherClientItem) {
+          otherClientItem.quantity += actualQuantity;
+        } else {
+          otherClient.player.inventory.push({
+            item: items[itemName],
+            quantity: actualQuantity,
+          });
+        }
+        responseMessage = `You give ${player} ${actualQuantity} ${itemName}.`;
+        const outGoingMessage = buildMessage("text", responseMessage, "World");
+        const incomingMessage = buildMessage(
+          "text",
+          `${client.player.name} gives you ${actualQuantity} ${itemName}.`,
+          "World"
+        );
+        otherClient.writeStream.write(Buffer.from(incomingMessage));
+      } else {
+        responseMessage = `There is no player named ${player}.`;
+      }
+    }
+    const outGoingMessage = buildMessage("text", responseMessage, "World");
+    client.writeStream.write(Buffer.from(outGoingMessage));
+  },
   inventory: (client) => {
     const inventory = client.player.inventory;
     // default message if inventory is empty

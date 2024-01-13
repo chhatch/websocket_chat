@@ -27,7 +27,7 @@ const knownCommands = {
   },
   drop: {
     description: "Drop an item",
-    usage: "/drop <item> <quantity>, alias: d",
+    usage: "/drop <item> <quantity?>, alias: d",
     action: (_, stream, internalStream, [itemName, quantity = 1]) => {
       stream.push(
         buildMessage("server_command", `drop ${itemName} ${quantity}`)
@@ -36,10 +36,19 @@ const knownCommands = {
   },
   get: {
     description: "Pick up an item",
-    usage: "/get <item> <quantity>, alias: g",
+    usage: "/get <item> <quantity?>, alias: g",
     action: (_, stream, internalStream, [itemName, quantity = 1]) => {
       stream.push(
         buildMessage("server_command", `get ${itemName} ${quantity}`)
+      );
+    },
+  },
+  give: {
+    description: "Give an item to another player",
+    usage: "/give <player> <item> <quantity?>, alias: gv",
+    action: (_, stream, internalStream, [player, itemName, quantity = 1]) => {
+      stream.push(
+        buildMessage("server_command", `give ${player} ${itemName} ${quantity}`)
       );
     },
   },
@@ -89,6 +98,8 @@ const commandMapper = {
   d: knownCommands.drop,
   get: knownCommands.get,
   g: knownCommands.get,
+  give: knownCommands.give,
+  gv: knownCommands.give,
   help: knownCommands.help,
   h: knownCommands.help,
   inventory: knownCommands.inventory,
