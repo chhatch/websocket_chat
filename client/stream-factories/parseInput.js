@@ -83,10 +83,14 @@ const knownCommands = {
 };
 
 const commandMapper = {
+  close: knownCommands.close,
+  c: knownCommands.close,
   drop: knownCommands.drop,
   d: knownCommands.drop,
   get: knownCommands.get,
   g: knownCommands.get,
+  help: knownCommands.help,
+  h: knownCommands.help,
   inventory: knownCommands.inventory,
   i: knownCommands.inventory,
   look: knownCommands.look,
