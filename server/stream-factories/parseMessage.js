@@ -208,6 +208,7 @@ const knownCommands = {
   },
   name: (client, [name]) => {
     client.player.name = name;
+    console.log(`${name} has joined the game.`);
   },
 };
 

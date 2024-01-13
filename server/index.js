@@ -20,6 +20,7 @@ wsServer.on("connection", (ws) => {
   ws.on("close", () => {
     delete clientsConnected[wsId];
     console.log("Connection closed.");
+    console.log(`${client.player.name} has left the game.`);
   });
 
   const wsStream = createWebSocketStream(ws, { encoding: "utf8" });
