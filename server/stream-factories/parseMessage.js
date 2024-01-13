@@ -4,14 +4,38 @@ import fs from "fs";
 import { clientsConnected } from "../clients.js";
 import { map } from "../map.js";
 import { items } from "../items.js";
+import { npcs } from "../npcs.js";
 
 export const MessageStream = { parseMessageStream: null };
 const look = (client, [direction] = []) => {
   const roomId = client.player.roomId;
   const roomDescription = map[roomId].description;
+  // describe people in the room
+  const playersInRoom = Object.entries(clientsConnected).filter(
+    ([id, otherClient]) =>
+      id !== `${client.id}` && otherClient.player.roomId === roomId
+  );
+  const playersDescription = playersInRoom.length
+    ? playersInRoom
+        .map(([id, otherClient]) => otherClient.player.name)
+        .join("\n")
+    : "";
+  const npcsInRoom = Object.values(npcs).filter((npc) => npc.roomId === roomId);
+  const npcsDescription = npcsInRoom.length
+    ? npcsInRoom.map((npc) => npc.description).join("\n")
+    : "";
+
+  const peopleDescription = `${
+    playersInRoom.length || npcsInRoom.length
+      ? `You see:${playersInRoom.length ? "\n" + playersDescription : ""}${
+          npcsInRoom.length ? "\n" + npcsDescription : ""
+        }`
+      : ""
+  }`;
+
   // describe items in the room
   const items = map[roomId].items;
-  let itemsDescription = false;
+  let itemsDescription = "";
   if (items.length) {
     itemsDescription =
       "On the ground you see:\n" +
@@ -19,10 +43,12 @@ const look = (client, [direction] = []) => {
         .map(({ item: { name }, quantity }) => `${name} x${quantity}`)
         .join("\n");
   }
-  const description = itemsDescription
-    ? `${roomDescription}\n${itemsDescription}`
-    : roomDescription;
+  const description = `${roomDescription}${
+    itemsDescription !== "" ? "\n" + itemsDescription : ""
+  }${peopleDescription !== "" ? "\n" + peopleDescription : ""}`;
+
   const outGoingMessage = buildMessage("text", description, "World");
+
   client.writeStream.write(Buffer.from(outGoingMessage));
 };
 

@@ -17,7 +17,7 @@ A small inn is to the west.`
 
 const northEdgeOfTown = buildRoom(
   `You are at the northern edge of town.
-The wagon tracks disappear into the dark cypress forest to the north.
+Wagon tracks disappear into the dark cypress forest to the north.
 You hear the creatures of the fen in the distance.
 The town square is to the south.`
 );
@@ -33,6 +33,7 @@ const itemShop = buildRoom(
   `You are in a small, poorly lit item shop.
 There are shelves of dusty bottles and jars.
 A few cheap cloaks hang on the wall.
+There is no shopkeeper in sight.
 The door to the north leads back to the town square.`
 );
 

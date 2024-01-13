@@ -28,7 +28,7 @@ const chatBox = new termkit.TextBox({
   parent: document,
   scrollable: true,
   vScrollBar: true,
-  lineWrap: true,
+  wordWrap: true,
   x: 2,
   y: 2,
   width: chatBoxWidth,
