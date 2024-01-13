@@ -55,6 +55,13 @@ const look = (client, [direction] = []) => {
   client.writeStream.write(Buffer.from(outGoingMessage));
 };
 
+const oppositeDirectionDict = {
+  north: "south",
+  south: "north",
+  east: "west",
+  west: "east",
+};
+
 const knownCommands = {
   drop: (client, [itemName, quantity = 1]) => {
     const roomId = client.player.roomId;
@@ -185,6 +192,7 @@ const knownCommands = {
   move: (client, [direction]) => {
     const oldRoomId = client.player.roomId;
     const room = map[oldRoomId];
+    const oppositeDirection = oppositeDirectionDict[direction];
     const exit = room.exits[direction];
     if (exit) {
       const newRoomId = exit.id;
@@ -203,7 +211,9 @@ You move to the ${direction}.`,
       // tell the other players someone entered the room
       const enterMessage = buildMessage(
         "text",
-        `${client.player.name} enters the area.`,
+        `${client.player.name} enters the area${
+          oppositeDirection ? ` from the ${oppositeDirection}` : ""
+        }.`,
         "World"
       );
       const playersInNewRoom = Object.entries(clientsConnected).filter(
@@ -238,7 +248,17 @@ You move to the ${direction}.`,
   },
   name: (client, [name]) => {
     client.player.name = name;
-    console.log(`${name} has joined the game.`);
+    const message = `${name} has joined the game.`;
+    console.log(message);
+    // tell the other players someone entered the room
+    const enterMessage = buildMessage("text", message, "World");
+    const playersInRoom = Object.entries(clientsConnected).filter(
+      ([id, otherClient]) => id !== `${client.id}`
+    );
+
+    playersInRoom.forEach(([id, client]) => {
+      client.writeStream.write(Buffer.from(enterMessage));
+    });
   },
   talk: (client, [npcName]) => {
     const roomId = client.player.roomId;

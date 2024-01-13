@@ -21,6 +21,17 @@ wsServer.on("connection", (ws) => {
     delete clientsConnected[wsId];
     console.log("Connection closed.");
     console.log(`${client.player.name} has left the game.`);
+
+    // broadcast to other players
+    Object.values(clientsConnected).forEach((otherClient) => {
+      otherClient.writeStream.write(
+        buildMessage(
+          "text",
+          `${client.player.name} has left the game.`,
+          "World"
+        )
+      );
+    });
   });
 
   const wsStream = createWebSocketStream(ws, { encoding: "utf8" });
