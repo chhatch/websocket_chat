@@ -1,7 +1,7 @@
 import { Writable } from "stream";
 import { buildMessage } from "../../utils/index.js";
 import { MessageStream } from "./parseMessage.js";
-import { clientsWritable } from "../clients.js";
+import { clientsConnected, clientsWritable } from "../clients.js";
 
 // world states with art label and description
 const knownStates = {
@@ -40,6 +40,20 @@ const knownCommands = {
           .map((command) => `${command.usage} - ${command.description}`)
           .join("\n");
       console.log(helpMessage);
+    },
+  },
+  // list players
+  players: {
+    description: "List players",
+    usage: "/players",
+    action: (wsServer) => {
+      const players = Object.values(clientsConnected)
+        .map((client) => client.player.name)
+        .join("\n");
+      if (!players) {
+        console.log("No players connected.");
+      }
+      console.log(players);
     },
   },
 };
