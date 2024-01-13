@@ -3,11 +3,17 @@ import { buildMessage } from "../../utils/index.js";
 import { MessageStream } from "./parseMessage.js";
 
 const directionMapper = {
+  north: "north",
   n: "north",
+  east: "east",
   e: "east",
+  south: "south",
   s: "south",
+  west: "west",
   w: "west",
+  up: "up",
   u: "up",
+  down: "down",
   d: "down",
 };
 
