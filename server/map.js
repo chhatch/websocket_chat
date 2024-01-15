@@ -8,6 +8,7 @@ const buildRoom = (description, items = []) => ({
   items,
 });
 
+// town
 const townSquare = buildRoom(
   `You are in the town square.
 Muddy wagon tracks lead away to the north and east.
@@ -33,7 +34,7 @@ const itemShop = buildRoom(
   `You are in a small, poorly lit item shop.
 There are shelves of dusty bottles and jars.
 A few cheap cloaks hang on the wall.
-There is no shopkeeper in sight.
+The grimy rug by your feet is oddly crumpled. There is no shopkeeper in sight.
 The door to the north leads back to the town square.`
 );
 
@@ -42,6 +43,16 @@ The air is thick with smoke and the smell of cheap ale.
 A few patrons sit at the bar.
 The door to the east leads back to the town square.`);
 
+townSquare.exits.north = northEdgeOfTown;
+northEdgeOfTown.exits.south = townSquare;
+townSquare.exits.east = eastEdgeOfTown;
+eastEdgeOfTown.exits.west = townSquare;
+townSquare.exits.south = itemShop;
+itemShop.exits.north = townSquare;
+townSquare.exits.west = inn;
+inn.exits.east = townSquare;
+
+// the northern road
 const northernRoad1 = buildRoom(
   `You are on a road leading north into the Whispering Fen.
 You hear the sounds of the fen all around you. It is unnerving.
@@ -72,16 +83,6 @@ The only way out is to the west.`,
   [{ item: items["key"], quantity: 1 }]
 );
 
-townSquare.exits.north = northEdgeOfTown;
-northEdgeOfTown.exits.south = townSquare;
-townSquare.exits.east = eastEdgeOfTown;
-eastEdgeOfTown.exits.west = townSquare;
-townSquare.exits.south = itemShop;
-itemShop.exits.north = townSquare;
-townSquare.exits.west = inn;
-inn.exits.east = townSquare;
-
-// the northern road
 northEdgeOfTown.exits.north = northernRoad1;
 northernRoad1.exits.south = northEdgeOfTown;
 northernRoad1.exits.north = northernRoad2;
@@ -92,6 +93,84 @@ northernRoad2.exits.east = chapelClearing;
 chapelClearing.exits.west = northernRoad2;
 chapelClearing.exits.east = chapel;
 chapel.exits.west = chapelClearing;
+
+// the tunnels beneath the town
+const stairsEntrance = buildRoom(
+  `You are at the top of a spiral staircase leading down into darkness.
+  A faint light glows from below.
+  Above you is the trap door leading back to the item shop.`
+);
+
+const stairsBottom = buildRoom(
+  `You are at the bottom of a spiral staircase leading up into darkness.
+  A faint light glows from above.
+  There are collapsed tunnels to the south and east.
+  To the west is a torchlit tunnel leading deeper into the earth.`
+);
+
+const tunnelSplit = buildRoom(
+  `There are cobwebs everywhere, but the tunnel is clear.
+Oddly, a few torches burn on the walls. You hear the sound of running water.
+The passage splits to the north and south.
+The stairs leading back up are to the east.`
+);
+
+const tunnelN = buildRoom(
+  `An odd looking piece of machinery hums gently in the center of the room.
+The stone walls are slick with moisture.
+To west the tunnel grows dim.
+From the south you faintly hear the sound of running water.`
+);
+
+const tunnelNW = buildRoom(
+  `The tunnel is dark and damp here. Most of the torches have burned out or been knocked from the walls.
+A middle aged man lies dead on the floor. His face frozen in an wide-eyed shriek of terror. He appears intact, but his skin is pale and his eyes are milky white.
+The tunnel is brighter to the east.
+The tunnel continues south, but you feel a cold breeze coming from that direction.`,
+  [{ item: items["coin"], quantity: 2 }]
+);
+
+const tunnelS = buildRoom(
+  `You hear the water loud and clear now. It almost sounds like a river.
+Through a rusty grate on the floor you can see a stream rushing by.
+Yellow slime grows on the walls and floor.
+The tunnel continues north and west.`,
+  [{ item: items["coin"], quantity: 1 }]
+);
+
+const tunnelSW = buildRoom(
+  `You are in a small room with a pool of water in the center.
+A smashed chest lies in the corner.
+You hear the sound of flowing water to the east.
+The tunnel continues north, but you feel a cold breeze coming from that direction.`
+);
+
+const chamber = buildRoom(
+  `You are in a large, circular chamber with a high ceiling. Torches burn brightly on the walls.
+Macabre statues carved from black stone stand in alcoves around the room. They range from obscene to bloodcurdling.
+An altar stands in the center of the room. It is stained with blood.
+An ornate door is set into the wall on the west side of the room. It is closed.
+Tunnels lead north and south.`
+);
+
+itemShop.exits.down = stairsEntrance;
+stairsEntrance.exits.up = itemShop;
+stairsEntrance.exits.down = stairsBottom;
+stairsBottom.exits.up = stairsEntrance;
+stairsBottom.exits.west = tunnelSplit;
+tunnelSplit.exits.east = stairsBottom;
+tunnelSplit.exits.north = tunnelN;
+tunnelN.exits.south = tunnelSplit;
+tunnelSplit.exits.south = tunnelS;
+tunnelS.exits.north = tunnelSplit;
+tunnelN.exits.west = tunnelNW;
+tunnelNW.exits.east = tunnelN;
+tunnelS.exits.west = tunnelSW;
+tunnelSW.exits.east = tunnelS;
+tunnelNW.exits.south = chamber;
+chamber.exits.north = tunnelNW;
+tunnelSW.exits.north = chamber;
+chamber.exits.south = tunnelSW;
 
 export const map = [
   townSquare,
@@ -104,6 +183,14 @@ export const map = [
   deadEnd,
   chapelClearing,
   chapel,
+  stairsEntrance,
+  stairsBottom,
+  tunnelSplit,
+  tunnelN,
+  tunnelNW,
+  tunnelS,
+  tunnelSW,
+  chamber,
 ].reduce((acc, room) => {
   acc[room.id] = room;
   return acc;
