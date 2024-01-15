@@ -65,7 +65,7 @@ The stench of rotting vegetation is overwhelming.
 The road bends eastward, but a small path leads north. To the south the road leads back toward Mistfall Hollow.`);
 
 const deadEnd = buildRoom(`You are on a small path in the Whispering Fen.
-The path ends in a bog with a wagon sunken into the mud.
+The path ends in a bog with a wagon half-sunken into the mud.
 The cypress trees loom overhead. The air is thick with mist.
 The only way out is to the south.`);
 

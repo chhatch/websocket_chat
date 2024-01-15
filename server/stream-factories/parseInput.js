@@ -7,7 +7,7 @@ import { clientsConnected, clientsWritable } from "../clients.js";
 const knownStates = {
   moon: {
     art: "moon",
-    description: "A lonely moon rise high in the sky.",
+    description: "A lonely moon rises high in the sky.",
   },
   storm: {
     art: "storm",
