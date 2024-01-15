@@ -92,8 +92,8 @@ const knownCommands = {
   talk: {
     description: "Talk to an NPC",
     usage: "/talk <npc>, alias: t",
-    action: (_, stream, internalStream, [npc]) => {
-      stream.push(buildMessage("server_command", `talk ${npc}`));
+    action: (_, stream, internalStream, [npc, topic = "default"]) => {
+      stream.push(buildMessage("server_command", `talk ${npc} ${topic}`));
     },
   },
 };

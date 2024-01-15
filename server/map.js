@@ -25,7 +25,7 @@ The town square is to the south.`
 const eastEdgeOfTown = buildRoom(
   `You are at the eastern edge of town.
 There is a small farm beyond which the forest looms.
-A dark shape moves in the shadows of the trees.
+A dark shape moves in the shadow of the trees.
 The town square is to the west.`
 );
 

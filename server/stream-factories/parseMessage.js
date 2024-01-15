@@ -260,13 +260,14 @@ You move to the ${direction}.`,
       client.writeStream.write(Buffer.from(enterMessage));
     });
   },
-  talk: (client, [npcName]) => {
+  talk: (client, [npcName, topic = "default"]) => {
     const roomId = client.player.roomId;
     const npc = Object.values(npcs).filter((npc) =>
       npc.tags.includes(npcName)
     )[0];
     if (npc && npc.roomId === roomId) {
-      const message = npc.messages.default;
+      const message =
+        npc.messages[topic] || `I don't know anything about ${topic}.}`;
       const outGoingMessage = buildMessage("text", message, npc.name);
       client.writeStream.write(Buffer.from(outGoingMessage));
     } else {

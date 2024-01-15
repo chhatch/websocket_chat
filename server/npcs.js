@@ -22,6 +22,7 @@ const guard = buildNpc({
   inventory: [],
   messages: {
     default: "I'm on duty. I can't talk right now.",
+    news: "Oh alright, if you'll leave me alone. Something strange is afoot. The residents are uneasy. That's all I know.",
   },
 });
 
@@ -34,6 +35,7 @@ const innkeeper = buildNpc({
   inventory: [],
   messages: {
     default: `Welcome to the Shackled Brier Inn. I'm Greta.`,
+    news: "I've been hearing folks talking about strange sounds that seem to be coming from beneath the town. I don't know what to make of it.",
   },
 });
 
@@ -46,6 +48,9 @@ const herbalist = buildNpc({
   inventory: [],
   messages: {
     default: `Hello, I'm Elara, the local herbalist.`,
+    herbs:
+      "The fen is rich with herbs. Herbs for healing, herbs for poison, herbs for all sorts of things, but you must know what you're looking for.",
+    news: "The forest is quiet. Too quiet. I don't like it.",
   },
 });
 
@@ -58,6 +63,7 @@ const farmer = buildNpc({
   inventory: [],
   messages: {
     default: `What do you want? I've got a lot to do.`,
+    news: "It's been a long day. I'm tired. The beasts of the fen have been keeping well away from the town lately. Makes my work easier, but it doesn't feel right.",
   },
 });
 
@@ -71,6 +77,10 @@ const cartographer = buildNpc({
   messages: {
     default: `Huh? Oh, I didn't see you there. I'm Astrid the cartographer.
   I've waited many years to explore this town.`,
+    map: "I've been studying this map of the town. It's old, but I believe it's accurate. I'm sorry I don't trust you enough to lend it to you.",
+    news: "Mistfall Hollow isn't the firt settlement to be built here. There was a town here long ago, but it was destroyed by a flood. The ruins are still out there somewhere. I believe there are tunnels beneath the town that lead to the ruins.",
+    tunnels:
+      "I don't know much about them, but if this map is accurate there should be an entrance to the tunnel system somewhere nearby.",
   },
 });
 
