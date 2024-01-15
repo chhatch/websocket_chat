@@ -153,6 +153,15 @@ An ornate door is set into the wall on the west side of the room. It is closed.
 Tunnels lead north and south.`
 );
 
+const forgottenSanctum = buildRoom(
+  `You have discovered the Forgotten Sanctum.
+The chamber is vast. Burning torches adorn large columns arranged in a circle at its center.
+Shadows dance across the walls, creating an illusion of figures engaged in long-forgotten rituals.
+Mysterious whispers echo through the air, carrying fragments of the settlement's past. The whispers are both haunting and alluring.
+You hope the exit is still to the east.`,
+  [{ item: items["scepter"], quantity: 1 }]
+);
+
 itemShop.exits.down = stairsEntrance;
 stairsEntrance.exits.up = itemShop;
 stairsEntrance.exits.down = stairsBottom;
@@ -171,6 +180,13 @@ tunnelNW.exits.south = chamber;
 chamber.exits.north = tunnelNW;
 tunnelSW.exits.north = chamber;
 chamber.exits.south = tunnelSW;
+chamber.exits.west = forgottenSanctum;
+forgottenSanctum.exits.east = chamber;
+
+// lock the sanctum door
+chamber.exits.west.locked = true;
+chamber.exits.west.key = items["key"];
+chamber.exits.west.lockedMessage = `The door is locked.`;
 
 export const map = [
   townSquare,

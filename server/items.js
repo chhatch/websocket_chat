@@ -9,11 +9,12 @@ const canteen = buildItem(
   "canteen",
   "A canteen filled with water. It's heavy."
 );
-const pewterMug = buildItem("mug", "A pewter mug. It's empty.");
 const key = buildItem("key", "A small iron key.");
+const pewterMug = buildItem("mug", "A pewter mug. It's empty.");
+const scepter = buildItem("scepter", "A golden scepter with a red gem.");
 const silverCoin = buildItem("coin", "A silver coin.");
 
-export const items = [canteen, pewterMug, key, silverCoin].reduce(
+export const items = [canteen, key, pewterMug, scepter, silverCoin].reduce(
   (acc, item) => {
     acc[item.id] = item;
     acc[item.name] = item;
