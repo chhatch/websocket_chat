@@ -196,7 +196,11 @@ const knownCommands = {
     const room = map[oldRoomId];
     const oppositeDirection = oppositeDirectionDict[direction];
     const exit = room.exits[direction];
-    if (exit) {
+    const key = exit?.key;
+    const hasKey =
+      key === undefined ||
+      client.player.inventory.find((item) => item.item === exit.key);
+    if (exit && (!exit.locked || hasKey)) {
       const newRoomId = exit.id;
       client.player.roomId = newRoomId;
       const description = exit.description;
@@ -239,6 +243,13 @@ You move to the ${direction}.`,
       playersInOldRoom.forEach(([id, client]) => {
         client.writeStream.write(Buffer.from(leaveMessage));
       });
+    } else if (exit && exit.locked) {
+      const playerGoingMessage = buildMessage(
+        "text",
+        exit.lockedMessage,
+        "World"
+      );
+      client.writeStream.write(Buffer.from(playerGoingMessage));
     } else {
       const playerGoingMessage = buildMessage(
         "text",

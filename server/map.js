@@ -97,15 +97,15 @@ chapel.exits.west = chapelClearing;
 // the tunnels beneath the town
 const stairsEntrance = buildRoom(
   `You are at the top of a spiral staircase leading down into darkness.
-  A faint light glows from below.
-  Above you is the trap door leading back to the item shop.`
+A faint light glows from below.
+Above you is the trap door leading back to the item shop.`
 );
 
 const stairsBottom = buildRoom(
   `You are at the bottom of a spiral staircase leading up into darkness.
-  A faint light glows from above.
-  There are collapsed tunnels to the south and east.
-  To the west is a torchlit tunnel leading deeper into the earth.`
+A faint light glows from above.
+There are collapsed tunnels to the south and east.
+To the west is a torchlit tunnel leading deeper into the earth.`
 );
 
 const tunnelSplit = buildRoom(
@@ -207,6 +207,7 @@ export const map = [
   tunnelS,
   tunnelSW,
   chamber,
+  forgottenSanctum,
 ].reduce((acc, room) => {
   acc[room.id] = room;
   return acc;
