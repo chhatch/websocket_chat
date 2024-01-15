@@ -21,8 +21,10 @@ const guard = buildNpc({
   description: "One of the few town guards, a weary and grizzled old soldier.",
   inventory: [],
   messages: {
+    chapel:
+      "The old chapel? It's been abandoned for years. I don't know why anyone would want to go there. It's up the road north and  a bit east of here.",
     default: "I'm on duty. I can't talk right now.",
-    news: "Oh alright, if you'll leave me alone. Something strange is afoot. The residents are uneasy. That's all I know.",
+    news: "Oh alright, if you'll leave me alone. Something strange is afoot.A suspicious looking hooded figure was seen near the old chapel. The residents are uneasy. That's all I know.",
   },
 });
 
