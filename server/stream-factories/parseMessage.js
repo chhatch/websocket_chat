@@ -177,9 +177,11 @@ const knownCommands = {
     // default message if inventory is empty
     let inventoryMessage = "Your inventory is empty.";
     if (inventory.length) {
-      inventoryMessage = inventory
-        .map(({ item, quantity }) => `${item.name} x${quantity}`)
-        .join("\n");
+      inventoryMessage =
+        "\n" +
+        inventory
+          .map(({ item, quantity }) => `${item.name} x${quantity}`)
+          .join("\n");
     }
     const outGoingMessage = buildMessage(
       "text",
