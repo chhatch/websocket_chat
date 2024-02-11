@@ -7,6 +7,9 @@ import {
 import { clientsConnected } from "./clients.js";
 import { items } from "./items.js";
 import { dbClient } from "../db/index.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const [port = 8080] = process.argv.slice(2);
 
@@ -63,9 +66,10 @@ wsServer.on("connection", (ws) => {
 
 console.log(`Server listening on port ${port}...`);
 
-dbClient.ready
-  .then(() => console.log("Database connected."))
-  .then(() => dbClient.query("SELECT * FROM pg_catalog.pg_tables;"))
+dbClient
+  .select("table_name")
+  .from("information_schema.tables")
+  .where("table_schema", "public")
   .then(console.log)
   .catch(console.error);
 
