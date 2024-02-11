@@ -5,7 +5,14 @@
   "author": "Chris Hatch <siege.hatch@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start:server": "docker start test && node server"
+    "container:create": "docker run --name game -e POSTGRES_PASSWORD=test -d -p 5433:5432 postgres",
+    "container:destroy": "docker rm game",
+    "container:start": "docker start game",
+    "container:stop": "docker stop game",
+    "db:make": "knex migrate:make $1 --knexfile db/knexfile.js",
+    "db:migrate": "knex migrate:latest --knexfile ./db/knexfile.js",
+    "start:client": "node client",
+    "start:server": "node server"
   },
   "dependencies": {
     "dotenv": "^16.4.2",

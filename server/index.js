@@ -66,11 +66,6 @@ wsServer.on("connection", (ws) => {
 
 console.log(`Server listening on port ${port}...`);
 
-dbClient
-  .select("table_name")
-  .from("information_schema.tables")
-  .where("table_schema", "public")
-  .then(console.log)
-  .catch(console.error);
+dbClient.select("*").from("items").then(console.log).catch(console.error);
 
 process.stdin.pipe(parseInputBuilder(wsServer));
