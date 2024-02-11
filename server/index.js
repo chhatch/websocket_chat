@@ -6,7 +6,6 @@ import {
 } from "./stream-factories/index.js";
 import { clientsConnected } from "./clients.js";
 import { items } from "./items.js";
-import { dbClient } from "../db/index.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -65,7 +64,5 @@ wsServer.on("connection", (ws) => {
 });
 
 console.log(`Server listening on port ${port}...`);
-
-dbClient.select("*").from("items").then(console.log).catch(console.error);
 
 process.stdin.pipe(parseInputBuilder(wsServer));
