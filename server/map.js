@@ -13,7 +13,13 @@ const townSquare = buildRoom(
   `You are in the town square.
 Muddy wagon tracks lead away to the north and east.
 A shabby looking item shop lies to the south.
-A small inn is to the west.`
+A small inn is to the west.`,
+  [
+    {
+      item: { id: 2, name: "key", description: "A small iron key." },
+      quantity: 1,
+    },
+  ]
 );
 
 const northEdgeOfTown = buildRoom(
@@ -80,7 +86,12 @@ const chapel = buildRoom(
 Rotting pews and a collapsed roof are all that remain.
 The windows are broken and the floor is covered in moss.
 The only way out is to the west.`,
-  [{ item: items["key"], quantity: 1 }]
+  [
+    {
+      item: { id: 2, name: "key", description: "A small iron key." },
+      quantity: 1,
+    },
+  ]
 );
 
 northEdgeOfTown.exits.north = northernRoad1;
@@ -127,7 +138,12 @@ const tunnelNW = buildRoom(
 A middle aged man lies dead on the floor. His face frozen in an wide-eyed shriek of terror. He appears intact, but his skin is pale and his eyes are milky white.
 The tunnel is brighter to the east.
 The tunnel continues south, but you feel a cold breeze coming from that direction.`,
-  [{ item: items["coin"], quantity: 2 }]
+  [
+    {
+      item: { id: 5, name: "coin", description: "A silver coin." },
+      quantity: 2,
+    },
+  ]
 );
 
 const tunnelS = buildRoom(
@@ -135,7 +151,12 @@ const tunnelS = buildRoom(
 Through a rusty grate on the floor you can see a stream rushing by.
 Yellow slime grows on the walls and floor.
 The tunnel continues north and west.`,
-  [{ item: items["coin"], quantity: 1 }]
+  [
+    {
+      item: { id: 5, name: "coin", description: "A silver coin." },
+      quantity: 1,
+    },
+  ]
 );
 
 const tunnelSW = buildRoom(
@@ -159,7 +180,16 @@ The chamber is vast. Burning torches adorn large columns arranged in a circle at
 Shadows dance across the walls, creating an illusion of figures engaged in long-forgotten rituals.
 Mysterious whispers echo through the air, carrying fragments of the settlement's past. The whispers are both haunting and alluring.
 You hope the exit is still to the east.`,
-  [{ item: items["scepter"], quantity: 1 }]
+  [
+    {
+      item: {
+        id: 4,
+        name: "scepter",
+        description: "A golden scepter with a red gem.",
+      },
+      quantity: 1,
+    },
+  ]
 );
 
 itemShop.exits.down = stairsEntrance;
@@ -185,7 +215,11 @@ forgottenSanctum.exits.east = chamber;
 
 // lock the sanctum door
 chamber.exits.west.locked = true;
-chamber.exits.west.key = items["key"];
+chamber.exits.west.key = {
+  id: 2,
+  name: "key",
+  description: "A small iron key.",
+};
 chamber.exits.west.lockedMessage = `The door is locked.`;
 
 export const map = [
