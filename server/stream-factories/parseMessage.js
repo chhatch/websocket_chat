@@ -199,7 +199,7 @@ const knownCommands = {
     const key = exit?.key;
     const hasKey =
       key === undefined ||
-      client.player.inventory.find((item) => item.item === exit.key);
+      client.player.inventory.find(({ item }) => item.id === exit.key.id);
     if (exit && (!exit.locked || hasKey)) {
       const newRoomId = exit.id;
       client.player.roomId = newRoomId;
