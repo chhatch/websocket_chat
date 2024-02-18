@@ -39,6 +39,7 @@ const chatBox = new termkit.TextBox({
 chatBox.appendLog("\n".repeat(chatBoxHeight - 1));
 
 //chat input
+const commandHistory = [""];
 const chatInput = new termkit.InlineInput({
   parent: document,
   textAttr: {},
@@ -58,7 +59,7 @@ const chatInput = new termkit.InlineInput({
   width: chatBoxWidth,
   cancelable: true,
   value: "",
-  //   history: ["Bob", "Bill", "Jack", "Some entry string"]
+  history: commandHistory,
   //   autoComplete: [],
   //   autoCompleteMenu: true,
   //   autoCompleteHint: true,
@@ -71,8 +72,20 @@ function onSubmit(value) {
   // send text
   inputStream.write(value);
 
+  // add to command history
+  if (commandHistory[commandHistory.length - 2] !== value) {
+    // limit history to 100
+    if (commandHistory.length > 100) commandHistory.shift();
+    // remove placeholder
+    commandHistory.pop();
+    commandHistory.push(value, "");
+  }
+
+  chatInput.contentArray = commandHistory;
+  chatInput.contentIndex = commandHistory.length - 1;
+
   //clear the input
-  chatInput.textBuffer.setText("");
+  chatInput.textBuffer.setText(``);
   chatInput.draw();
 }
 
