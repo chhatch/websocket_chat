@@ -50,9 +50,7 @@ const look = (client, [direction] = []) => {
     itemsDescription !== "" ? "\n" + itemsDescription : ""
   }${peopleDescription !== "" ? "\n" + peopleDescription : ""}`;
 
-  const outGoingMessage = buildMessage("text", description, "World");
-
-  client.writeStream.write(Buffer.from(outGoingMessage));
+  sendMessageToClient(client, description);
 };
 
 const oppositeDirectionDict = {
@@ -69,9 +67,10 @@ const knownCommands = {
     const itemEntry = client.player.inventory.find(
       (item) => item.item.name === itemName
     );
-    let responseMessage = `You do not have a ${itemName} to drop.`;
+    let responseText = `You do not have a ${itemName} to drop.`;
+    let actualQuantity = 0;
     if (itemEntry) {
-      const actualQuantity = Math.min(quantity, itemEntry.quantity);
+      actualQuantity = Math.min(quantity, itemEntry.quantity);
       // remove item from player inventory
       itemEntry.quantity -= actualQuantity;
       // remove item if quantity is 0 or less
@@ -89,18 +88,22 @@ const knownCommands = {
       } else {
         room.items.push({ item: items[itemName], quantity: actualQuantity });
       }
-      responseMessage = `You drop ${actualQuantity} ${itemName}.`;
+      responseText = `You drop ${actualQuantity} ${itemName}.`;
     }
-    const outGoingMessage = buildMessage("text", responseMessage, "World");
-    client.writeStream.write(Buffer.from(outGoingMessage));
+    // notify other players in the room
+    const otherPlayersText = `${client.player.name} drops ${actualQuantity} ${itemName}.`;
+
+    sendMessageToRoom(otherPlayersText, roomId, [`${client.id}`]);
+    sendMessageToClient(client, responseText);
   },
   get: (client, [itemName, quantity = 1]) => {
     const roomId = client.player.roomId;
     const room = map[roomId];
     const item = room.items.find(({ item }) => item.name === itemName);
-    let responseMessage = `There is no ${itemName} to get.`;
+    let responseText = `There is no ${itemName} to get.`;
+    let actualQuantity = 0;
     if (item) {
-      const actualQuantity = Math.min(quantity, item.quantity);
+      actualQuantity = Math.min(quantity, item.quantity);
       // remove item from room
       item.quantity -= actualQuantity;
       // remove item if quantity is 0 or less
@@ -119,10 +122,12 @@ const knownCommands = {
           quantity: actualQuantity,
         });
       }
-      responseMessage = `You pick up ${actualQuantity} ${itemName}.`;
+      responseText = `You pick up ${actualQuantity} ${itemName}.`;
     }
-    const outGoingMessage = buildMessage("text", responseMessage, "World");
-    client.writeStream.write(Buffer.from(outGoingMessage));
+    sendMessageToClient(client, responseText);
+    // notify other players in the room
+    const otherPlayersText = `${client.player.name} picks up ${actualQuantity} ${itemName}.`;
+    sendMessageToRoom(otherPlayersText, roomId, [`${client.id}`]);
   },
   give: (client, [player, itemName, quantity = 1]) => {
     const roomId = client.player.roomId;
@@ -130,9 +135,10 @@ const knownCommands = {
     const itemEntry = client.player.inventory.find(
       (entry) => entry.item.name === itemName
     );
-    let responseMessage = `You do not have a ${itemName} to give.`;
+    let responseText = `You do not have a ${itemName} to give.`;
+    let actualQuantity = 0;
     if (itemEntry) {
-      const actualQuantity = Math.min(quantity, itemEntry.quantity);
+      actualQuantity = Math.min(quantity, itemEntry.quantity);
       // remove item from player inventory
       itemEntry.quantity -= actualQuantity;
       // remove item if quantity is 0 or less
@@ -157,38 +163,34 @@ const knownCommands = {
             quantity: actualQuantity,
           });
         }
-        responseMessage = `You give ${player} ${actualQuantity} ${itemName}.`;
-        const outGoingMessage = buildMessage("text", responseMessage, "World");
-        const incomingMessage = buildMessage(
-          "text",
-          `${client.player.name} gives you ${actualQuantity} ${itemName}.`,
-          "World"
-        );
-        otherClient.writeStream.write(Buffer.from(incomingMessage));
+        responseText = `You give ${player} ${actualQuantity} ${itemName}.`;
+        const incomingText = `${client.player.name} gives you ${actualQuantity} ${itemName}.`;
+        sendMessageToClient(otherClient, incomingText);
+        // notify other players in the room
+        const otherPlayersText = `${client.player.name} gives ${player} ${actualQuantity} ${itemName}.`;
+        sendMessageToRoom(otherPlayersText, roomId, [
+          `${client.id}`,
+          `${otherClient.id}`,
+        ]);
       } else {
-        responseMessage = `There is no player named ${player}.`;
+        responseText = `There is no player named ${player}.`;
       }
     }
-    const outGoingMessage = buildMessage("text", responseMessage, "World");
-    client.writeStream.write(Buffer.from(outGoingMessage));
+    sendMessageToClient(client, responseText);
   },
   inventory: (client) => {
     const inventory = client.player.inventory;
     // default message if inventory is empty
-    let inventoryMessage = "Your inventory is empty.";
+    let inventoryText = "Your inventory is empty.";
     if (inventory.length) {
-      inventoryMessage =
+      inventoryText =
         "\n" +
         inventory
           .map(({ item, quantity }) => `${item.name} x${quantity}`)
           .join("\n");
     }
-    const outGoingMessage = buildMessage(
-      "text",
-      inventoryMessage,
-      "Your Inventory"
-    );
-    client.writeStream.write(Buffer.from(outGoingMessage));
+
+    sendMessageToClient(client, inventoryText);
   },
   look,
   move: (client, [direction]) => {
@@ -206,71 +208,48 @@ const knownCommands = {
       const description = exit.description;
 
       // tell the player they entered a new room
-      const playerGoingMessage1 = buildMessage(
-        "text",
-        `---
-You move to the ${direction}.`,
-        "World"
-      );
-      client.writeStream.write(Buffer.from(playerGoingMessage1));
+      const playerGoingText1 = `---
+You move to the ${direction}.`;
+      sendMessageToClient(client, playerGoingText1);
       look(client);
       // tell the other players someone entered the room
-      const enterMessage = buildMessage(
-        "text",
-        `${client.player.name} enters the area${
-          oppositeDirection ? ` from the ${oppositeDirection}` : ""
-        }.`,
-        "World"
-      );
+      const enterText = `${client.player.name} enters the area${
+        oppositeDirection ? ` from the ${oppositeDirection}` : ""
+      }.`;
       const playersInNewRoom = Object.entries(clientsConnected).filter(
         ([id, otherClient]) =>
           id !== `${client.id}` && otherClient.player.roomId === newRoomId
       );
       playersInNewRoom.forEach(([id, client]) => {
-        client.writeStream.write(Buffer.from(enterMessage));
+        sendMessageToClient(client, enterText);
       });
 
       // tell the other players someone left the room
-      const leaveMessage = buildMessage(
-        "text",
-        `${client.player.name} leaves the area heading ${direction}.`,
-        "World"
-      );
+      const leaveText = `${client.player.name} leaves the area heading ${direction}.`;
       const playersInOldRoom = Object.entries(clientsConnected).filter(
         ([id, otherClient]) =>
           id !== `${client.id}` && otherClient.player.roomId === oldRoomId
       );
       playersInOldRoom.forEach(([id, client]) => {
-        client.writeStream.write(Buffer.from(leaveMessage));
+        sendMessageToClient(client, leaveText);
       });
     } else if (exit && exit.locked) {
-      const playerGoingMessage = buildMessage(
-        "text",
-        exit.lockedMessage,
-        "World"
-      );
-      client.writeStream.write(Buffer.from(playerGoingMessage));
+      sendMessageToClient(client, exit.lockedMessage);
     } else {
-      const playerGoingMessage = buildMessage(
-        "text",
-        "You cannot go that way.",
-        "World"
-      );
-      client.writeStream.write(Buffer.from(playerGoingMessage));
+      const playerBlockedText = "You cannot go that way.";
+      sendMessageToClient(client, playerBlockedText);
     }
   },
   name: (client, [name]) => {
     client.player.name = name;
-    const message = `${name} has joined the game.`;
-    console.log(message);
+    const messageText = `${name} has joined the game.`;
     // tell the other players someone entered the room
-    const enterMessage = buildMessage("text", message, "World");
     const playersInRoom = Object.entries(clientsConnected).filter(
       ([id, otherClient]) => id !== `${client.id}`
     );
 
     playersInRoom.forEach(([id, client]) => {
-      client.writeStream.write(Buffer.from(enterMessage));
+      sendMessageToClient(client, messageText);
     });
   },
   talk: (client, [npcName, topic = "default"]) => {
@@ -281,15 +260,10 @@ You move to the ${direction}.`,
     if (npc && npc.roomId === roomId) {
       const message =
         npc.messages[topic] || `I don't know anything about ${topic}.}`;
-      const outGoingMessage = buildMessage("text", message, npc.name);
-      client.writeStream.write(Buffer.from(outGoingMessage));
+      sendMessageToClient(client, message, npc.name);
     } else {
-      const outGoingMessage = buildMessage(
-        "text",
-        `There is no ${npcName} here.`,
-        "World"
-      );
-      client.writeStream.write(Buffer.from(outGoingMessage));
+      const outGoingText = `There is no ${npcName} here.`;
+      sendMessageToClient(client, outGoingText);
     }
   },
 };
@@ -314,24 +288,21 @@ export const parseMessageBuilder = (clientId) => {
           console.log(`Unknown server command: ${data}`);
         }
       } else if (type === "text") {
-        const outGoingMessage = buildMessage("text", data, from);
-        const playersInRoom = Object.entries(clientsConnected).filter(
-          ([id, otherClient]) =>
-            id !== `${client.id}` &&
-            otherClient.player.roomId === client.player.roomId
-        );
+        const outGoingText = data;
+        const playersInRoom = getPlayersInRoom(client.player.roomId);
 
-        if (playersInRoom.length) {
-          playersInRoom.forEach(([id, client]) => {
-            client.writeStream.write(Buffer.from(outGoingMessage));
-          });
-        } else {
-          const noOneToHearMessage = buildMessage(
-            "text",
-            "There is no one here to hear you.",
-            "World"
+        // user is in room too
+        if (playersInRoom.length > 1) {
+          // consider npcs in the room?
+          sendMessageToRoom(
+            outGoingText,
+            client.player.roomId,
+            [`${client.id}`],
+            from
           );
-          client.writeStream.write(Buffer.from(noOneToHearMessage));
+        } else {
+          const noOneToHearText = "There is no one here to hear you.";
+          sendMessageToClient(client, noOneToHearText);
         }
       } else {
         console.log(
@@ -343,3 +314,22 @@ export const parseMessageBuilder = (clientId) => {
     },
   });
 };
+
+function getPlayersInRoom(roomId) {
+  return Object.entries(clientsConnected).filter(
+    ([id, otherClient]) => otherClient.player.roomId === roomId
+  );
+}
+
+function sendMessageToClient(client, text, from = "World") {
+  client.writeStream.write(Buffer.from(buildMessage("text", text, from)));
+}
+
+function sendMessageToRoom(text, roomId, excludeIds = [], from = "World") {
+  const playersInRoom = getPlayersInRoom(roomId);
+  playersInRoom.forEach(([id, client]) => {
+    if (!excludeIds.includes(id)) {
+      sendMessageToClient(client, text, from);
+    }
+  });
+}
