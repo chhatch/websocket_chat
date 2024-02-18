@@ -1,6 +1,7 @@
 import { Duplex, Writable } from "stream";
 import termkit from "terminal-kit";
 import { teardown } from "../../teardown.js";
+import { colors } from './colors.js';
 
 // input duplex stream
 export const inputStream = new Duplex({
@@ -13,7 +14,7 @@ export const inputStream = new Duplex({
 
 const { terminal: term } = termkit;
 
-term.windowTitle("Terminal Chat");
+term.windowTitle("The Terminal");
 term.clear();
 
 const document = term.createDocument({
@@ -44,7 +45,7 @@ const chatInput = new termkit.InlineInput({
   parent: document,
   textAttr: {},
   voidAttr: {},
-  placeholder: "Chat, enter commands, or send art",
+  placeholder: "Chat, enter commands, or send nudes",
   x: 2,
   y: chatBoxHeight + 3,
   //*
@@ -106,15 +107,15 @@ document.focusNext();
 // chat box border
 const chatBoxBorder = new termkit.Border({
   parent: chatBox,
-  color: "blue",
-  bgColor: "green",
+  color: colors.blue,
+  bgColor: colors.green,
 });
 
 // chat input border
 const chatInputBorder = new termkit.Border({
   parent: chatInput,
-  color: "blue",
-  bgColor: "green",
+  color: colors.blue,
+  bgColor: colors.green,
 });
 
 // ascii art box
@@ -133,8 +134,8 @@ const artBox = new termkit.TextBox({
 // art box border
 const artBoxBorder = new termkit.Border({
   parent: artBox,
-  color: "blue",
-  bgColor: "green",
+  color: colors.blue,
+  bgColor: colors.green,
 });
 
 const colorDict = {
