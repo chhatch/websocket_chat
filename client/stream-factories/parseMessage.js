@@ -1,6 +1,7 @@
 import { Transform } from "stream";
 import { safeParseJSON } from "../../utils/index.js";
 import fs from "fs";
+import { colors } from './colors.js';
 
 export const MessageStream = { parseMessageStream: null };
 
@@ -15,16 +16,16 @@ export const parseMessageBuilder = (label) =>
 
       // handle text
       if (type === "text") {
-        let color = "brightCyan";
+        let color = colors.aqua;
 
         if (from === "Gods") {
-          color = "magenta";
+          color = colors.magenta;
           from = "A voice out of the void";
         }
-        if (from === "Help") color = "white";
-        if (from === "Server") color = "brightBlue";
-        if (from === "World") color = "green";
-        if (from === "You") color = "white";
+        if (from === "Help") color = colors.white;
+        if (from === "Server") color = colors.lavender;
+        if (from === "World") color = colors.green;
+        if (from === "You") color = colors.white;
 
         let string;
         if (from === "World") string = `${data}\n`;
@@ -70,12 +71,12 @@ function buildDisplayInput({ type, data, color }) {
 
 // map art to file path and color
 const artDict = {
-  cleric: { path: "./assets/cleric.txt", color: "brightYellow" },
-  ogre: { path: "./assets/ogre.txt", color: "green" },
-  punch: { path: "./assets/punch.txt", color: "red" },
-  moon: { path: "./assets/moon.txt", color: "brightWhite" },
-  sun: { path: "./assets/sun.txt", color: "brightYellow" },
-  storm: { path: "./assets/storm.txt", color: "brightBlue" },
+  cleric: { path: "./assets/cleric.txt", color: colors.yellow },
+  ogre: { path: "./assets/ogre.txt", color: colors.green },
+  punch: { path: "./assets/punch.txt", color: colors.red },
+  moon: { path: "./assets/moon.txt", color: colors.White },
+  sun: { path: "./assets/sun.txt", color: colors.Yellow },
+  storm: { path: "./assets/storm.txt", color: colors.aqua },
 };
 
 function getCleric() {
