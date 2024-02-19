@@ -65,7 +65,8 @@ The road continues to the north. Mistfall Hollow lies to the south.`
   const northernRoad2 = buildRoom(`You are on a road in the Whispering Fen.
 Beasts sound close; you can hear them moving in the shadows.
 The stench of rotting vegetation is overwhelming.
-The road bends eastward, but a small path leads north. To the south the road leads back toward Mistfall Hollow.`);
+The road bends eastward, but a small path leads north. 
+To the south the road leads back toward Mistfall Hollow.`);
 
   const deadEnd = buildRoom(`You are on a small path in the Whispering Fen.
 The path ends in a bog with a wagon half-sunken into the mud.
@@ -75,7 +76,8 @@ The only way out is to the south.`);
   const chapelClearing =
     buildRoom(`The road opens into a soggy clearing choked with thorns and briars.
 Overrun with vegetation, a ruined chapel stands in the center of the clearing.
-It is altogether too quiet here. Moving further east you think you might be able to enter the old chapel.
+It is altogether too quiet here. 
+Moving further east you think you might be able to enter the old chapel.
 The muddy road leads back to the west.`);
 
   const chapel = buildRoom(
@@ -126,8 +128,11 @@ From the south you faintly hear the sound of running water.`
   );
 
   const tunnelNW = buildRoom(
-    `The tunnel is dark and damp here. Most of the torches have burned out or been knocked from the walls.
-A middle aged man lies dead on the floor. His face frozen in an wide-eyed shriek of terror. He appears intact, but his skin is pale and his eyes are milky white.
+    `The tunnel is dark and damp here. 
+Most of the torches have burned out or been knocked from the walls.
+A middle aged man lies dead on the floor. 
+His face frozen in an wide-eyed shriek of terror. 
+He appears intact, but his skin is pale and his eyes are milky white.
 The tunnel is brighter to the east.
 The tunnel continues south, but you feel a cold breeze coming from that direction.`,
     [{ item: items["coin"], quantity: 2 }]
