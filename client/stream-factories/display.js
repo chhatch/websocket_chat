@@ -1,7 +1,7 @@
 import { Duplex, Writable } from "stream";
 import termkit from "terminal-kit";
 import { teardown } from "../../teardown.js";
-import colors from './colors.js';
+import { rgbaColors, hexColors } from './colors.js';
 
 // input duplex stream
 export const inputStream = new Duplex({
