@@ -123,7 +123,7 @@ const commandMapper = {
   close: knownCommands.close,
   c: knownCommands.close,
   q: knownCommands.close,
-  quit: knowncommands.close,
+  quit: knownCommands.close,
   drop: knownCommands.drop,
   d: knownCommands.drop,
   get: knownCommands.get,
