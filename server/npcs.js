@@ -87,7 +87,7 @@ const cartographer = buildNpc({
   },
 });
 
-const farmer = buildNpc({
+const roquen = buildNpc({
   roomId: 1,
   name: "Roquen",
   tags: ["roquen"],
