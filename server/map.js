@@ -55,7 +55,7 @@ The door to the east leads back to the town square.`);
   townSquare.exits.west = inn;
   inn.exits.east = townSquare;
 
-  // the northern road
+ // THE NORTHERN ROAD
   const northernRoad1 = buildRoom(
     `You are on a road leading north into the Whispering Fen.
 You hear the sounds of the fen all around you. It is unnerving.
@@ -73,8 +73,7 @@ The path ends in a bog with a wagon half-sunken into the mud.
 The cypress trees loom overhead. The air is thick with mist.
 The only way out is to the south.`);
 
-  const chapelClearing =
-    buildRoom(`The road opens into a soggy clearing choked with thorns and briars.
+  const chapelClearing = buildRoom(`The road opens into a soggy clearing choked with thorns and briars.
 Overrun with vegetation, a ruined chapel stands in the center of the clearing.
 It is altogether too quiet here. 
 Moving further east you think you might be able to enter the old chapel.
@@ -99,7 +98,70 @@ The only way out is to the west.`,
   chapelClearing.exits.east = chapel;
   chapel.exits.west = chapelClearing;
 
-  // the tunnels beneath the town
+// THE EASTERN ROAD THE EASTERN ROAD THE EASTERN ROAD THE EASTERN ROAD THE EASTERN ROAD
+// The Blossom Trail
+const easternRoad1 = buildRoom(
+  `You are on a charming trail lined with vibrant blossoms. 
+  The fragrance of flowers fills the air, providing a momentary reprieve from your adventures. 
+  The trail stretches eastward, beckoning you forward, while the town lies to the west.`
+);
+eastEdgeOfTown.exits.east = easternRoad1;
+easternRoad1.exits.west = eastEdgeOfTown;
+
+// The Echoing Canyon
+const easternRoad2 = buildRoom(
+  `The trail leads you to the edge of a vast canyon. 
+  Echoes bounce off the steep walls, turning whispers into roars. 
+  A narrow bridge crosses the chasm to the east, offering the only path forward.`
+);
+easternRoad1.exits.east = easternRoad2;
+easternRoad2.exits.west = easternRoad1;
+easternRoad2.exits.north = mysticsHut;
+mysticsHut.exits.south = easternRoad2;
+easternRoad2.exits.south = crystalCavern;
+crystalCavern.exits.north = easternRoad2;
+
+// The Shifting Sands
+const easternRoad3 = buildRoom(
+  `Beyond the canyon lies a stretch of shifting sands. 
+  The desert is a mosaic of heat and mirages, with dunes that seem to dance under the sun. 
+  An ancient, half-buried road marker points eastward, guiding your way.`
+);
+easternRoad2.exits.east = easternRoad3;
+easternRoad3.exits.west = easternRoad2;
+easternRoad3.exits.north = forgottenLibrary;
+forgottenLibrary.exits.south = easternRoad3;
+
+// The Whispering Woods
+const easternRoad4 = buildRoom(
+  `The sands give way to the cool shade of whispering woods. 
+  Leaves rustle with secrets and the distant sound of a stream promises refreshment. 
+  The woods are dense, but a well-trodden path leads eastward through the trees.`
+);
+easternRoad3.exits.east = easternRoad4;
+easternRoad4.exits.west = easternRoad3;
+easternRoad4.exits.north = enchantedGarden;
+enchantedGarden.exits.south = easternRoad4;
+easternRoad4.exits.south = abandonedMill;
+abandonedMill.exits.north = easternRoad4;
+
+// The Misty Moor
+const easternRoad5 = buildRoom(
+  `Emerging from the woods, you find yourself on the edge of a misty moor. 
+  The fog hangs low, shrouding the ground in mystery. 
+  Lights flicker in the distance, guiding you to the east, where the Crossroads of Destiny await.`
+);
+easternRoad4.exits.east = easternRoad5;
+easternRoad5.exits.west = easternRoad4;
+easternRoad5.exits.north = sunkenShipwreck;
+sunkenShipwreck.exits.south = easternRoad5;
+easternRoad5.exits.south = wraithsForest;
+wraithsForest.exits.north = easternRoad5;
+easternRoad5.exits.east = crossroadsOfDestiny;
+crossroadsOfDestiny.exits.west = easternRoad5;
+
+
+// TUNNELS TUNNELS TUNNELS TUNNELS TUNNELS TUNNELS TUNNELS TUNNELS TUNNELS
   const stairsEntrance = buildRoom(
     `You are at the top of a spiral staircase leading down into darkness.
 A faint light glows from below.
@@ -201,6 +263,62 @@ You hope the exit is still to the east.`,
   chamber.exits.west.key = items["key"];
   chamber.exits.west.lockedMessage = `The door is locked.`;
 
+// staging area, i think we're gonna need to modularize this, im gonna try but ima break it im sure - joe
+// these are some stereotypical rooms that could be fun, I am not married to the names or descriptions (yet)
+const crystalCavern = buildRoom(
+  `You enter a luminous cavern, its walls aglow with myriad crystals. 
+  The light dances off the surfaces, creating a kaleidoscope of colors. 
+  The air is cool and carries a hint of mineral fragrance. 
+  A narrow passage to the north leads back to the surface.`
+);
+crystalCavern.exits.south = townSquare;
+
+const wraithsForest = buildRoom(
+  `The forest is dense and eerie, with a thick mist that clings to every tree. 
+  Shadows move in the corner of your eye, and the air is filled with the whispers of the unseen. 
+  A barely visible path leads west, back towards civilization.`
+);
+wraithsForest.exits.west = townSquare; 
+
+const sunkenShipwreck = buildRoom(
+  `Beneath the waves lies a ghostly shipwreck, its timbers creaking with the memory of storms. 
+  Fish flit through the broken masts, and the treasure glints in the murky light. 
+  A rope ladder to the east suggests a way back to the shore.`
+);
+sunkenShipwreck.exits.east = townSquare; 
+
+const mysticsHut = buildRoom(
+  `Nestled in a quiet glen, the hut is shrouded in mystery. 
+  Bottles of strange liquids and ancient tomes line the shelves. 
+  The air is heavy with the scent of herbs and incense. 
+  A path winds back to the town to the north.`
+);
+mysticsHut.exits.north = townSquare; 
+
+const enchantedGarden = buildRoom(
+  `Surrounded by high walls, this secret garden blooms with otherworldly flowers. 
+  Their fragrances blend into a heady perfume. 
+  The sound of a hidden fountain is soothing, and a gate to the south leads back to the world outside.`
+);
+enchantedGarden.exits.south = townSquare; 
+
+const forgottenLibrary = buildRoom(
+  `Dust motes float in the air of a vast library, filled with books long forgotten. 
+  The silence is profound, broken only by the soft creak of a floorboard. 
+  Echoes of ancient knowledge whisper from the shelves. 
+  The exit lies to the east.`
+);
+forgottenLibrary.exits.east = townSquare;
+
+const abandonedMill = buildRoom(
+  `You find yourself in front of an old, abandoned mill. 
+  Its once-powerful gears are now silent, covered in ivy and moss. 
+  The wind carries the faint scent of old grain. 
+  The doorway, though worn, invites you inside, where the shadows seem to hold secrets of a time long past. 
+  To the north, the faint path seems to lead back to the town, whispering tales of those who once brought their harvests here to be ground.`
+);
+abandonedMill.exits.north = townSquare;
+
   [
     townSquare,
     northEdgeOfTown,
@@ -221,6 +339,19 @@ You hope the exit is still to the east.`,
     tunnelSW,
     chamber,
     forgottenSanctum,
+    easternRoad1,
+    easternRoad2,
+    easternRoad3,
+    easternRoad4,
+    easternRoad5,
+    mysticsHut,
+    forgottenLibrary,
+    enchantedGarden,
+    abandonedMill,
+    sunkenShipwreck,
+    wraithsForest,
+    crystalCavern,
+
   ].forEach((room) => {
     map[room.id] = room;
   });
