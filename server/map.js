@@ -115,7 +115,8 @@ To the west is a torchlit tunnel leading deeper into the earth.`
 
   const tunnelSplit = buildRoom(
     `There are cobwebs everywhere, but the tunnel is clear.
-Oddly, a few torches burn on the walls. You hear the sound of running water.
+Oddly, a few torches burn on the walls. 
+You hear the sound of running water.
 The passage splits to the north and south.
 The stairs leading back up are to the east.`
   );
@@ -155,17 +156,21 @@ The tunnel continues north, but you feel a cold breeze coming from that directio
 
   const chamber = buildRoom(
     `You are in a large, circular chamber with a high ceiling. Torches burn brightly on the walls.
-Macabre statues carved from black stone stand in alcoves around the room. They range from obscene to bloodcurdling.
-An altar stands in the center of the room. It is stained with blood.
-An ornate door is set into the wall on the west side of the room. It is closed.
+Macabre statues carved from black stone stand in alcoves around the room. 
+They range from obscene to bloodcurdling.
+A blood stained altar stands in the center of the room.
+An ornate door is set into the wall on the west side of the room.
+The door appears to be closed.
 Tunnels lead north and south.`
   );
 
   const forgottenSanctum = buildRoom(
     `You have discovered the Forgotten Sanctum.
-The chamber is vast. Burning torches adorn large columns arranged in a circle at its center.
+The chamber is vast. 
+Burning torches adorn large columns arranged in a circle at its center.
 Shadows dance across the walls, creating an illusion of figures engaged in long-forgotten rituals.
-Mysterious whispers echo through the air, carrying fragments of the settlement's past. The whispers are both haunting and alluring.
+Mysterious whispers echo through the air, carrying fragments of the settlement's past. 
+The whispers are both haunting and alluring.
 You hope the exit is still to the east.`,
     [{ item: items["scepter"], quantity: 1 }]
   );
