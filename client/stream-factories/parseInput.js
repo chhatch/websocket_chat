@@ -73,7 +73,28 @@ const knownCommands = {
   },
   look: {
     description: "Look around",
-    usage: "/look",
+    usage: "/look, alias: oogle",
+    action: (_, stream) => stream.push(buildMessage("server_command", "look")),
+  },
+  // placeholder stuff 
+    attack: {
+    description: "You try to attack but you just, uh, Look around",
+    usage: "/attack, alias: strike",
+    action: (_, stream) => stream.push(buildMessage("server_command", "look")),
+  },
+    flee: {
+    description: "You attempt to flee, but get distracted and simply Look around",
+    usage: "/flee, alias: run",
+    action: (_, stream) => stream.push(buildMessage("server_command", "look")),
+  },
+    cast: {
+    description: "Look at those hands",
+    usage: "/cast, alias: spell",
+    action: (_, stream) => stream.push(buildMessage("server_command", "look")),
+  },
+    emote: {
+    description: "Look around with emotion",
+    usage: "/emote, alias: me",
     action: (_, stream) => stream.push(buildMessage("server_command", "look")),
   },
   move: {
@@ -101,6 +122,8 @@ const knownCommands = {
 const commandMapper = {
   close: knownCommands.close,
   c: knownCommands.close,
+  q: knownCommands.close,
+  quit: knowncommands.close,
   drop: knownCommands.drop,
   d: knownCommands.drop,
   get: knownCommands.get,
@@ -116,6 +139,7 @@ const commandMapper = {
   move: knownCommands.move,
   m: knownCommands.move,
   talk: knownCommands.talk,
+  ask: knownCommands.ask,
   t: knownCommands.talk,
 };
 
