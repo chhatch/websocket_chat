@@ -16,16 +16,16 @@ export const parseMessageBuilder = (label) =>
 
       // handle text
       if (type === "text") {
-        let color = colors.aqua;
+        let color = rgbaColors.aqua;
 
         if (from === "Gods") {
           color = colors.magenta;
           from = "A voice out of the void";
         }
-        if (from === "Help") color = colors.white;
-        if (from === "Server") color = colors.lavender;
-        if (from === "World") color = colors.green;
-        if (from === "You") color = colors.white;
+        if (from === "Help") color = rgbaColors.white;
+        if (from === "Server") color = rgbaColors.lavender;
+        if (from === "World") color = rgbaColors.green;
+        if (from === "You") color = rgbaColors.white;
 
         let string;
         if (from === "World") string = `${data}\n`;
@@ -71,12 +71,12 @@ function buildDisplayInput({ type, data, color }) {
 
 // map art to file path and color
 const artDict = {
-  cleric: { path: "./assets/cleric.txt", color: colors.yellow },
-  ogre: { path: "./assets/ogre.txt", color: colors.green },
-  punch: { path: "./assets/punch.txt", color: colors.red },
-  moon: { path: "./assets/moon.txt", color: colors.White },
-  sun: { path: "./assets/sun.txt", color: colors.Yellow },
-  storm: { path: "./assets/storm.txt", color: colors.aqua },
+  cleric: { path: "./assets/cleric.txt", color: rgbaColors.yellow },
+  ogre: { path: "./assets/ogre.txt", color: rgbaColors.green },
+  punch: { path: "./assets/punch.txt", color: rgbaColors.red },
+  moon: { path: "./assets/moon.txt", color: rgbaColors.White },
+  sun: { path: "./assets/sun.txt", color: rgbaColors.Yellow },
+  storm: { path: "./assets/storm.txt", color: rgbaColors.aqua },
 };
 
 function getCleric() {
