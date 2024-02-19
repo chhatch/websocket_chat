@@ -107,15 +107,15 @@ document.focusNext();
 // chat box border
 const chatBoxBorder = new termkit.Border({
   parent: chatBox,
-  color: colors.blue,
-  bgColor: colors.green,
+  color: rgbaColors.blue,
+  bgColor: rgbaColors.green,
 });
 
 // chat input border
 const chatInputBorder = new termkit.Border({
   parent: chatInput,
-  color: colors.blue,
-  bgColor: colors.green,
+  color: rgbaColors.blue,
+  bgColor: rgbaColors.green,
 });
 
 // ascii art box
@@ -134,8 +134,8 @@ const artBox = new termkit.TextBox({
 // art box border
 const artBoxBorder = new termkit.Border({
   parent: artBox,
-  color: colors.blue,
-  bgColor: colors.green,
+  color: rgbaColors.blue,
+  bgColor: rgbaColors.green,
 });
 
 const colorDict = {
