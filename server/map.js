@@ -54,6 +54,61 @@ The door to the east leads back to the town square.`);
   itemShop.exits.north = townSquare;
   townSquare.exits.west = inn;
   inn.exits.east = townSquare;
+// staging area, i think we're gonna need to modularize this, im gonna try but ima break it im sure - joe
+// these are some stereotypical rooms that could be fun, I am not married to the names or descriptions (yet)
+const crystalCavern = buildRoom(
+  `You enter a luminous cavern, its walls aglow with myriad crystals. 
+  The light dances off the surfaces, creating a kaleidoscope of colors. 
+  The air is cool and carries a hint of mineral fragrance. 
+  A narrow passage to the north leads back to the surface.`
+);
+crystalCavern.exits.south = townSquare;
+
+const wraithsForest = buildRoom(
+  `The forest is dense and eerie, with a thick mist that clings to every tree. 
+  Shadows move in the corner of your eye, and the air is filled with the whispers of the unseen. 
+  A barely visible path leads west, back towards civilization.`
+);
+wraithsForest.exits.west = townSquare; 
+
+const sunkenShipwreck = buildRoom(
+  `Beneath the waves lies a ghostly shipwreck, its timbers creaking with the memory of storms. 
+  Fish flit through the broken masts, and the treasure glints in the murky light. 
+  A rope ladder to the east suggests a way back to the shore.`
+);
+sunkenShipwreck.exits.east = townSquare; 
+
+const mysticsHut = buildRoom(
+  `Nestled in a quiet glen, the hut is shrouded in mystery. 
+  Bottles of strange liquids and ancient tomes line the shelves. 
+  The air is heavy with the scent of herbs and incense. 
+  A path winds back to the town to the north.`
+);
+mysticsHut.exits.north = townSquare; 
+
+const enchantedGarden = buildRoom(
+  `Surrounded by high walls, this secret garden blooms with otherworldly flowers. 
+  Their fragrances blend into a heady perfume. 
+  The sound of a hidden fountain is soothing, and a gate to the south leads back to the world outside.`
+);
+enchantedGarden.exits.south = townSquare; 
+
+const forgottenLibrary = buildRoom(
+  `Dust motes float in the air of a vast library, filled with books long forgotten. 
+  The silence is profound, broken only by the soft creak of a floorboard. 
+  Echoes of ancient knowledge whisper from the shelves. 
+  The exit lies to the east.`
+);
+forgottenLibrary.exits.east = townSquare;
+
+const abandonedMill = buildRoom(
+  `You find yourself in front of an old, abandoned mill. 
+  Its once-powerful gears are now silent, covered in ivy and moss. 
+  The wind carries the faint scent of old grain. 
+  The doorway, though worn, invites you inside, where the shadows seem to hold secrets of a time long past. 
+  To the north, the faint path seems to lead back to the town, whispering tales of those who once brought their harvests here to be ground.`
+);
+abandonedMill.exits.north = townSquare;
 
  // THE NORTHERN ROAD
   const northernRoad1 = buildRoom(
@@ -263,61 +318,6 @@ You hope the exit is still to the east.`,
   chamber.exits.west.key = items["key"];
   chamber.exits.west.lockedMessage = `The door is locked.`;
 
-// staging area, i think we're gonna need to modularize this, im gonna try but ima break it im sure - joe
-// these are some stereotypical rooms that could be fun, I am not married to the names or descriptions (yet)
-const crystalCavern = buildRoom(
-  `You enter a luminous cavern, its walls aglow with myriad crystals. 
-  The light dances off the surfaces, creating a kaleidoscope of colors. 
-  The air is cool and carries a hint of mineral fragrance. 
-  A narrow passage to the north leads back to the surface.`
-);
-crystalCavern.exits.south = townSquare;
-
-const wraithsForest = buildRoom(
-  `The forest is dense and eerie, with a thick mist that clings to every tree. 
-  Shadows move in the corner of your eye, and the air is filled with the whispers of the unseen. 
-  A barely visible path leads west, back towards civilization.`
-);
-wraithsForest.exits.west = townSquare; 
-
-const sunkenShipwreck = buildRoom(
-  `Beneath the waves lies a ghostly shipwreck, its timbers creaking with the memory of storms. 
-  Fish flit through the broken masts, and the treasure glints in the murky light. 
-  A rope ladder to the east suggests a way back to the shore.`
-);
-sunkenShipwreck.exits.east = townSquare; 
-
-const mysticsHut = buildRoom(
-  `Nestled in a quiet glen, the hut is shrouded in mystery. 
-  Bottles of strange liquids and ancient tomes line the shelves. 
-  The air is heavy with the scent of herbs and incense. 
-  A path winds back to the town to the north.`
-);
-mysticsHut.exits.north = townSquare; 
-
-const enchantedGarden = buildRoom(
-  `Surrounded by high walls, this secret garden blooms with otherworldly flowers. 
-  Their fragrances blend into a heady perfume. 
-  The sound of a hidden fountain is soothing, and a gate to the south leads back to the world outside.`
-);
-enchantedGarden.exits.south = townSquare; 
-
-const forgottenLibrary = buildRoom(
-  `Dust motes float in the air of a vast library, filled with books long forgotten. 
-  The silence is profound, broken only by the soft creak of a floorboard. 
-  Echoes of ancient knowledge whisper from the shelves. 
-  The exit lies to the east.`
-);
-forgottenLibrary.exits.east = townSquare;
-
-const abandonedMill = buildRoom(
-  `You find yourself in front of an old, abandoned mill. 
-  Its once-powerful gears are now silent, covered in ivy and moss. 
-  The wind carries the faint scent of old grain. 
-  The doorway, though worn, invites you inside, where the shadows seem to hold secrets of a time long past. 
-  To the north, the faint path seems to lead back to the town, whispering tales of those who once brought their harvests here to be ground.`
-);
-abandonedMill.exits.north = townSquare;
 
   [
     townSquare,
