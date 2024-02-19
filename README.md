@@ -1,7 +1,7 @@
 ### Prerequisites
 
-1. Node (not sure of minimum version, using v18 for development)
-1. Yarn (you can use npm if you wish)
+1. Node.js (not sure of minimum version, using v18 for development)
+1. Yarn (Node package manager, npm works too)
 1. Docker
 
 ### Setup
@@ -27,7 +27,8 @@ PGPASSWORD=test
 
 ### Start Game Server
 
-`yarn start:sever [ws port]`
+`yarn start:server port`
+Change port to the port you'd like to run on, currently default is [null] so you gotta choose something yaesel.
 
 ### Start Game Client
 
