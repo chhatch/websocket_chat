@@ -59,7 +59,7 @@ const herbalist = buildNpc({
 const farmer = buildNpc({
   roomId: 2,
   name: "Padraig O'Moore",
-  tags: ["farmer", "bran", "fieldstead" "padraig"],
+  tags: ["farmer", "bran", "fieldstead", "padraig"],
   description: `A gruff looking farmer with a pitchfork slung over his shoulder.
     It's hard to tell if he's angry or just tired. His boots are caked with black mud.`,
   inventory: [],
