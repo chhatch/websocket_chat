@@ -87,6 +87,19 @@ const cartographer = buildNpc({
   },
 });
 
+const farmer = buildNpc({
+  roomId: 1,
+  name: "Roquen",
+  tags: ["roquen"],
+  description: `appears to be a Paladin of some sort.  An Elf?`,
+  inventory: [],
+  messages: {
+    default: `Aye?`,
+    news: "'I dont speak common tongue.",
+    name: "In another life, I had spaulders with swords on them",
+  },
+});
+
 export const npcs = [guard, innkeeper, herbalist, farmer, cartographer].reduce(
   (acc, npc) => {
     acc[npc.name] = npc;
