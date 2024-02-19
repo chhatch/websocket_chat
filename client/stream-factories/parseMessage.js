@@ -1,7 +1,7 @@
 import { Transform } from "stream";
 import { safeParseJSON } from "../../utils/index.js";
 import fs from "fs";
-import { colors } from './colors.js';
+import { rgbaColors, hexColors } from './colors.js';
 
 export const MessageStream = { parseMessageStream: null };
 
