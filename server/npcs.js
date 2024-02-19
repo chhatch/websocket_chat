@@ -37,7 +37,7 @@ const innkeeper = buildNpc({
   inventory: [],
   messages: {
     default: `Welcome to the Shackled Brier Inn. I'm Greta.`,
-    news: "I've been hearing folks talking about strange sounds that seem to be coming from beneath the town. I don't know what to make of it.",
+    news: "I've been 'earin folks chattin' 'bout queer noises, they have, seemin' to come up from under the town, innit? I don't know what to make of it, mind.",
   },
 });
 
