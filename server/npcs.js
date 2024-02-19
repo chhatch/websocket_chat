@@ -58,14 +58,15 @@ const herbalist = buildNpc({
 
 const farmer = buildNpc({
   roomId: 2,
-  name: "Bran Fieldstead",
-  tags: ["farmer", "bran", "fieldstead"],
+  name: "Padraig O'Moore",
+  tags: ["farmer", "bran", "fieldstead" "padraig"],
   description: `A gruff looking farmer with a pitchfork slung over his shoulder.
     It's hard to tell if he's angry or just tired. His boots are caked with black mud.`,
   inventory: [],
   messages: {
-    default: `What do you want? I've got a lot to do.`,
-    news: "It's been a long day. I'm tired. The beasts of the fen have been keeping well away from the town lately. Makes my work easier, but it doesn't feel right.",
+    default: `What is it ye be after, eh? I've got me hands full as it is, so I do.`,
+    news: "'Tis been a long stretch of the day, that it has. I'm wearied to the bone, so I am. The creatures of the bog, they've been steerin' clear of the village of late. Eases the load of me toil, it does, but it sits not right with me soul.",
+    name: "In another life, some folks called me Bran",
   },
 });
 
