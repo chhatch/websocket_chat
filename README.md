@@ -28,6 +28,7 @@ PGPASSWORD=test
 ### Start Game Server
 
 `yarn start:server port`
+
 Change port to the port you'd like to run on, currently default is [null] so you gotta choose something yaesel.
 
 ### Start Game Client
