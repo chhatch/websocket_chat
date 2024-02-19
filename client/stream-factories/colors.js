@@ -1,11 +1,8 @@
 // starforged industries
 // a cult of the final call
 // celebrating an impressive "30% uptime" 
-// Joe Elliott
 
-// used RGBA so we can change opacity if ever it seems like a cool idea
-
-const colors = {
+const rgbaColors = {
     red: "rgba(255, 0, 0, 1)",
     green: "rgba(0, 128, 0, 1)",
     blue: "rgba(0, 0, 255, 1)",
@@ -31,34 +28,32 @@ const colors = {
     gray: "rgba(128, 128, 128, 1)",
     brown: "rgba(165, 42, 42, 1)"
 };
-// below is a color set in HEX values in case someday we prefer it over RGBA, in which case, we already got it typed out
- // actually im probably going to update this so they can both be used woooooo - s_d
-// const colors = {
-//    aqua: "#00FFFF",
-//    black: "#000000",
-//    blue: "#0000FF",
-//    fuchsia: "#FF00FF",
-//    gray: "#808080",
-//    green: "#008000",
-//    lime: "#00FF00",
-//    maroon: "#800000",
-//    navy: "#000080",
-//    olive: "#808000",
-//    purple: "#800080",
-//    red: "#FF0000",
-//    silver: "#C0C0C0",
-//    teal: "#008080",
-//    white: "#FFFFFF",
-//    yellow: "#FFFF00",
-//    orange: "#FFA500",
-//    pink: "#FFC0CB",
-//    coral: "#FF7F50",
-//    chocolate: "#D2691E",
-//    indigo: "#4B0082",
-//    violet: "#EE82EE",
-//    gold: "#FFD700",
-//    skyblue: "#87CEEB"
-// };
 
-// export so we can import!
-export default colors;
+const hexColors = {
+    aqua: "#00FFFF",
+    black: "#000000",
+    blue: "#0000FF",
+    fuchsia: "#FF00FF",
+    gray: "#808080",
+    green: "#008000",
+    lime: "#00FF00",
+    maroon: "#800000",
+    navy: "#000080",
+    olive: "#808000",
+    purple: "#800080",
+    red: "#FF0000",
+    silver: "#C0C0C0",
+    teal: "#008080",
+    white: "#FFFFFF",
+    yellow: "#FFFF00",
+    orange: "#FFA500",
+    pink: "#FFC0CB",
+    coral: "#FF7F50",
+    chocolate: "#D2691E",
+    indigo: "#4B0082",
+    violet: "#EE82EE",
+    gold: "#FFD700",
+    skyblue: "#87CEEB"
+ };
+
+export { rgbaColors, hexColors };
