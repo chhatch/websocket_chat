@@ -212,8 +212,8 @@ easternRoad5.exits.north = sunkenShipwreck;
 sunkenShipwreck.exits.south = easternRoad5;
 easternRoad5.exits.south = wraithsForest;
 wraithsForest.exits.north = easternRoad5;
-easternRoad5.exits.east = crossroadsOfDestiny;
-crossroadsOfDestiny.exits.west = easternRoad5;
+//easternRoad5.exits.east = crossroadsOfDestiny;
+//crossroadsOfDestiny.exits.west = easternRoad5;
 
 
 // TUNNELS TUNNELS TUNNELS TUNNELS TUNNELS TUNNELS TUNNELS TUNNELS TUNNELS
