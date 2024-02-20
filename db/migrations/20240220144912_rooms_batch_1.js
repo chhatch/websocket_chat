@@ -220,15 +220,17 @@ function addExits(knex, roomsHash, items) {
   roomsHash.northernRoad2.exits = {
     south: { id: roomsHash.northernRoad1.id },
     north: { id: roomsHash.deadEnd.id },
+    east: { id: roomsHash.chapelClearing.id },
   };
   roomsHash.deadEnd.exits = {
     south: { id: roomsHash.northernRoad2.id },
   };
   roomsHash.chapelClearing.exits = {
-    north: { id: roomsHash.chapel.id },
+    east: { id: roomsHash.chapel.id },
+    west: { id: roomsHash.northernRoad2.id },
   };
   roomsHash.chapel.exits = {
-    south: { id: roomsHash.chapelClearing.id },
+    west: { id: roomsHash.chapelClearing.id },
   };
 
   // tunnels
