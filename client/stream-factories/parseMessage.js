@@ -4,6 +4,7 @@ import fs from "fs";
 
 export const MessageStream = { parseMessageStream: null };
 
+const state = { fromLastSeen: null };
 export const parseMessageBuilder = (label) =>
   new Transform({
     objectMode: true,
@@ -27,12 +28,12 @@ export const parseMessageBuilder = (label) =>
         if (from === "You") color = "white";
 
         let string;
-        if (from === "World") string = `${data}\n`;
-        else string = `${from}: ${data}\n`;
+        if (from === "World") string = `${data}`;
+        else string = `${from}: ${data}`;
 
         const displayInput = buildDisplayInput({
           type,
-          data: string,
+          data: handleContext(string, from),
           color,
         });
 
@@ -63,6 +64,19 @@ export const parseMessageBuilder = (label) =>
       next();
     },
   });
+
+function handleContext(string, from) {
+  let updatedString = string;
+  const lastSeen = state.fromLastSeen;
+  if (
+    (from !== "Server" && lastSeen === "World" && from !== "World") ||
+    (lastSeen !== "World" && from === "World")
+  ) {
+    updatedString = `\n${string}`;
+  }
+  if (from !== "Server") state.fromLastSeen = from;
+  return updatedString;
+}
 
 function buildDisplayInput({ type, data, color }) {
   return { type, data, color };
