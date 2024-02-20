@@ -26,9 +26,9 @@ PGPASSWORD=test
   - `yarn db:migrate`
 
 ### Start Game Server
-
+- This begins the server within a terminal
 `yarn start:sever [ws port]`
 
 ### Start Game Client
-
+- This begins the client within a terminal
 `yarn start:client [player name] [ws://ip:port]`
