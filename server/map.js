@@ -83,7 +83,7 @@ The muddy road leads back to the west.`);
 Rotting pews and a collapsed roof are all that remain.
 The windows are broken and the floor is covered in moss.
 The only way out is to the west.`,
-    [{ item: items["key"], quantity: 1 }]
+    [{ item: { id: "2", name: "key" }, quantity: 1 }]
   );
 
   northEdgeOfTown.exits.north = northernRoad1;
@@ -130,7 +130,7 @@ From the south you faintly hear the sound of running water.`
 A middle aged man lies dead on the floor. His face frozen in an wide-eyed shriek of terror. He appears intact, but his skin is pale and his eyes are milky white.
 The tunnel is brighter to the east.
 The tunnel continues south, but you feel a cold breeze coming from that direction.`,
-    [{ item: items["coin"], quantity: 2 }]
+    [{ item: { id: "5", name: "coin" }, quantity: 2 }]
   );
 
   const tunnelS = buildRoom(
@@ -138,7 +138,7 @@ The tunnel continues south, but you feel a cold breeze coming from that directio
 Through a rusty grate on the floor you can see a stream rushing by.
 Yellow slime grows on the walls and floor.
 The tunnel continues north and west.`,
-    [{ item: items["coin"], quantity: 1 }]
+    [{ item: { id: "5", name: "coin" }, quantity: 1 }]
   );
 
   const tunnelSW = buildRoom(
@@ -162,7 +162,7 @@ The chamber is vast. Burning torches adorn large columns arranged in a circle at
 Shadows dance across the walls, creating an illusion of figures engaged in long-forgotten rituals.
 Mysterious whispers echo through the air, carrying fragments of the settlement's past. The whispers are both haunting and alluring.
 You hope the exit is still to the east.`,
-    [{ item: items["scepter"], quantity: 1 }]
+    [{ item: { id: "4", name: "scepter" }, quantity: 1 }]
   );
 
   itemShop.exits.down = stairsEntrance;
