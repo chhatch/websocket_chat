@@ -9,6 +9,7 @@
     "container:destroy": "docker rm game",
     "container:start": "docker start game",
     "container:stop": "docker stop game",
+    "container:reset": "yarn container:stop && yarn container:destroy && yarn container:create",
     "db:make": "knex migrate:make $1 --knexfile db/knexfile.js",
     "db:migrate": "knex migrate:latest --knexfile ./db/knexfile.js",
     "start:client": "node client",
