@@ -44,7 +44,7 @@ wsServer.on("connection", (ws) => {
 
   // add player to client
   client.player = {
-    roomId: 0,
+    roomId: 1,
     inventory: [{ item: items["canteen"], quantity: 1 }],
   };
 

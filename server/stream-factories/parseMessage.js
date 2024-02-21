@@ -66,9 +66,7 @@ const knownCommands = {
   drop: (client, [itemName, quantity = 1]) => {
     const roomId = client.player.roomId;
     const room = map[roomId];
-    const itemEntry = client.player.inventory.find(
-      (item) => item.item.name === itemName
-    );
+    const itemEntry = findItem(itemName, client.player.inventory);
     let responseText = `You do not have a ${itemName} to drop.`;
     let actualQuantity = 0;
     if (itemEntry) {
@@ -82,9 +80,7 @@ const knownCommands = {
         );
       }
       // add item to room
-      const roomItemEntry = room.items.find(
-        (item) => item.item.name === itemName
-      );
+      const roomItemEntry = findItem(itemName, room.items);
       if (roomItemEntry) {
         roomItemEntry.quantity += actualQuantity;
       } else {
@@ -101,7 +97,7 @@ const knownCommands = {
   get: (client, [itemName, quantity = 1]) => {
     const roomId = client.player.roomId;
     const room = map[roomId];
-    const item = room.items.find(({ item }) => item.name === itemName);
+    const item = findItem(itemName, room.items);
     let responseText = `There is no ${itemName} to get.`;
     let actualQuantity = 0;
     if (item) {
@@ -113,9 +109,7 @@ const knownCommands = {
         room.items = room.items.filter((entry) => entry.item.name !== itemName);
       }
       // add item to player inventory
-      const playerItem = client.player.inventory.find(
-        (item) => item.item.name === itemName
-      );
+      const playerItem = findItem(itemName, client.player.inventory);
       if (playerItem) {
         playerItem.quantity += actualQuantity;
       } else {
@@ -134,9 +128,7 @@ const knownCommands = {
   give: (client, [player, itemName, quantity = 1]) => {
     const roomId = client.player.roomId;
     const room = map[roomId];
-    const itemEntry = client.player.inventory.find(
-      (entry) => entry.item.name === itemName
-    );
+    const itemEntry = findItem(itemName, client.player.inventory);
     let responseText = `You do not have a ${itemName} to give.`;
     let actualQuantity = 0;
     if (itemEntry) {
@@ -154,8 +146,9 @@ const knownCommands = {
         (otherClient) => otherClient.player.name === player
       );
       if (otherClient) {
-        const otherClientItem = otherClient.player.inventory.find(
-          (item) => item.item.name === itemName
+        const otherClientItem = findItem(
+          itemName,
+          otherClient.player.inventory
         );
         if (otherClientItem) {
           otherClientItem.quantity += actualQuantity;
@@ -202,8 +195,7 @@ const knownCommands = {
     const exit = room.exits[direction];
     const key = exit?.key;
     const hasKey =
-      key === undefined ||
-      client.player.inventory.find(({ item }) => item.id === exit.key.id);
+      key === undefined || findItem(exit.key.name, client.player.inventory);
     if (exit && (!exit.locked || hasKey)) {
       const newRoomId = exit.id;
       client.player.roomId = newRoomId;
@@ -334,4 +326,17 @@ function sendMessageToRoom(text, roomId, excludeIds = [], from = "World") {
       sendMessageToClient(client, text, from);
     }
   });
+}
+
+function getItemName(itemId) {
+  const item = items[itemId];
+  if (item) {
+    return item.name;
+  }
+  console.error(`No item found with id ${itemId}`);
+  return null;
+}
+
+function findItem(itemName, items) {
+  return items.find(({ item }) => item.name === itemName);
 }
