@@ -5,7 +5,8 @@ import { clientsConnected } from "../clients.js";
 import { map } from "../map.js";
 import { items } from "../items.js";
 import { npcs } from "../npcs.js";
-
+const spacer =
+  "-----------------------------------------------------------------------------";
 export const MessageStream = { parseMessageStream: null };
 const look = (client, [direction] = []) => {
   const roomId = client.player.roomId;
@@ -46,9 +47,10 @@ const look = (client, [direction] = []) => {
         .map(({ item: { name }, quantity }) => `${name} x${quantity}`)
         .join("\n");
   }
-  const description = `${roomDescription}${
-    itemsDescription !== "" ? "\n" + itemsDescription : ""
-  }${peopleDescription !== "" ? "\n" + peopleDescription : ""}`;
+  const description = `${spacer}
+  ${roomDescription}${
+    itemsDescription !== "" ? "\n\n" + itemsDescription : ""
+  }${peopleDescription !== "" ? "\n\n" + peopleDescription : ""}`;
 
   sendMessageToClient(client, description);
 };
@@ -200,7 +202,7 @@ const knownCommands = {
       const description = exit.description;
 
       // tell the player they entered a new room
-      const playerGoingText1 = `---
+      const playerGoingText1 = `${spacer}
 You move to the ${direction}.`;
       sendMessageToClient(client, playerGoingText1);
       look(client);

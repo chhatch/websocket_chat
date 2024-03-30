@@ -155,7 +155,6 @@ export const displayBuilder = () =>
       if (type === "text") {
         chatBox.appendLog(
           ` ${colorDict[color]}${data
-            .trim()
             .split("\n")
             .join(`\n ${colorDict[color]}`)}`
         );
