@@ -15,7 +15,7 @@ const buildNpc = ({
 });
 
 const guard = buildNpc({
-  roomId: 1,
+  roomId: 2,
   name: "Sergeant Ealdor",
   tags: ["soldier", "guard", "sergeant", "ealdor"],
   description: "One of the few town guards, a weary and grizzled old soldier.",
@@ -29,7 +29,7 @@ const guard = buildNpc({
 });
 
 const innkeeper = buildNpc({
-  roomId: 4,
+  roomId: 5,
   name: "Greta Hearthwood",
   tags: ["innkeeper", "greta", "hearthwood"],
   description: `The innkeeper, a surprisingly young woman with a friendly face.
@@ -42,7 +42,7 @@ const innkeeper = buildNpc({
 });
 
 const herbalist = buildNpc({
-  roomId: 2,
+  roomId: 3,
   name: "Elara Willowshade",
   tags: ["herbalist", "elara", "willowshade"],
   description: `An herbalist in a dark green cloak humming quietly to herself.
@@ -57,7 +57,7 @@ const herbalist = buildNpc({
 });
 
 const farmer = buildNpc({
-  roomId: 2,
+  roomId: 3,
   name: "Bran Fieldstead",
   tags: ["farmer", "bran", "fieldstead"],
   description: `A gruff looking farmer with a pitchfork slung over his shoulder.
@@ -70,7 +70,7 @@ const farmer = buildNpc({
 });
 
 const cartographer = buildNpc({
-  roomId: 0,
+  roomId: 1,
   name: "Astrid Moonshadow",
   tags: ["cartographer", "astrid", "moonshadow"],
   description: `The cartographer, an old woman in a tweed skirt and a woolen shawl.
